@@ -1,40 +1,46 @@
-#include <vulkan/vulkan.h>
-
+#include <GL/gl.h>
 #include <iostream>
 #include <stdexcept>
 #include <cstdlib>
+#include <GLFW/glfw3.h>
 
-class HelloTriangleApplication {
-public:
-    void run() {
-        initVulkan();
-        mainLoop();
-        cleanup();
+int main(void)
+{
+    GLFWwindow* window;
+
+    /* Initialize the library */
+    if (!glfwInit())
+        return -1;
+
+    /* Create a windowed mode window and its OpenGL context */
+    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    if (!window)
+    {
+        glfwTerminate();
+        return -1;
     }
 
-private:
-    void initVulkan() {
+    /* Make the window's context current */
+    glfwMakeContextCurrent(window);
 
+    /* Loop until the user closes the window */
+    while (!glfwWindowShouldClose(window))
+    {
+        /* Render here */
+        glClear(GL_COLOR_BUFFER_BIT);
+        
+        glBegin(GL_TRIANGLES);
+        glVertex2f(-0.5f, -0.5f);
+        glVertex2f(0.0f,  0.5f);
+        glVertex2f(0.5f, -0.5f);
+        glEnd();
+        /* Swap front and back buffers */
+        glfwSwapBuffers(window);
+
+        /* Poll for and process events */
+        glfwPollEvents();
     }
 
-    void mainLoop() {
-
-    }
-
-    void cleanup() {
-
-    }
-};
-
-int main() {
-    HelloTriangleApplication app;
-
-    try {
-        app.run();
-    } catch (const std::exception& e) {
-        std::cerr << e.what() << std::endl;
-        return EXIT_FAILURE;
-    }
-
-    return EXIT_SUCCESS;
+    glfwTerminate();
+    return 0;
 }
