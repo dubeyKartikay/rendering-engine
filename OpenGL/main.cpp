@@ -5,6 +5,8 @@
 #include <iostream>
 #include <stdexcept>
 
+#define VERT_ATTRIB_POSITON 0
+#define VERT_ATTRIB_POSITON_NCOMP 2
 int main(void) {
   GLFWwindow *window;
 
@@ -40,8 +42,8 @@ int main(void) {
   glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float),positions,GL_STATIC_DRAW);
 
   //define buffer layout
-  glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,2*sizeof(float),0);
-  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(VERT_ATTRIB_POSITON,VERT_ATTRIB_POSITON_NCOMP,GL_FLOAT,GL_FALSE,2*sizeof(float),0);
+  glEnableVertexAttribArray(VERT_ATTRIB_POSITON);
   
   while (!glfwWindowShouldClose(window)) {
     /* Render here */
