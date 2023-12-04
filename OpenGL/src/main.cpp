@@ -110,7 +110,6 @@ void APIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
         break;
     }
     std::cout << id << ": "<< _type << " of " << _severity << " severity, raised from "<< _source << ": " << msg << std::endl;
-    exit(EXIT_FAILURE);
 }
 
 // =============== INIT DEBUG OUTPUT ================
@@ -194,6 +193,7 @@ int main(void) {
     return -1;
 
 	glfwWindowHint (GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+
   /* Create a windowed mode window and its OpenGL context */
   window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
   if (!window) {
@@ -203,6 +203,7 @@ int main(void) {
 
   /* Make the window's context current */
   glfwMakeContextCurrent(window);
+  glfwSwapInterval(2);
   if (glewInit() != GLEW_OK) {
     std::cout << "GLEW INIT ERROR" << std::endl;
     exit(EXIT_FAILURE);
@@ -238,13 +239,23 @@ int main(void) {
   ShaderSource s = readShaderFromFile("./res/Basic.shader"); 
   unsigned int program = CreateShaders(s);
   glUseProgram(program);
+  int u_Color_loc = glGetUniformLocation(program,"u_Color");
 
+  float r = 0;
+  float inc = 0.05f;
   while (!glfwWindowShouldClose(window)) {
     /* Render here */
     glClear(GL_COLOR_BUFFER_BIT);
-
+    if(r>=1){
+      inc = -inc;
+    }
+    if(r<0){
+      inc = -inc;
+    }
+    glUniform4f(u_Color_loc,r,0.102,0.344,1.0);
+    r+=inc;
     // draw selected buffer
-    glDrawElements(GL_TRIANGLES, 6, GL_INT, nullptr); 
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr); 
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
