@@ -101,22 +101,30 @@ int main(void) {
   }
 
   std::cout << glGetString(GL_VERSION) << std::endl;
-  float positions[6] = {-0.5f, -0.5, 0.0f, 0.5f, 0.5f, -0.5f};
+  float positions[] = {-0.5f, -0.5, 0.5f, 0.5f, 0.5f, -0.5f,-0.5f,0.5f};
+  unsigned int indices[] = {
+    0,1,2,
+    0,1,3
+  };
   unsigned int buffer_id;
-
+  unsigned int index_buffer_id;
   // generate buffer
   glGenBuffers(1, &buffer_id);
-
+  glGenBuffers(1,&index_buffer_id);
   // select buffer
   glBindBuffer(GL_ARRAY_BUFFER, buffer_id);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,index_buffer_id);
 
   // fill buffer
-  glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
-
+  glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), positions, GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(float), indices, GL_STATIC_DRAW);
   // define buffer layout
   glVertexAttribPointer(VERT_ATTRIB_POSITON, 2, GL_FLOAT, GL_FALSE,
                         2 * sizeof(float), 0);
   glEnableVertexAttribArray(VERT_ATTRIB_POSITON);
+
+  
+
   ShaderSource s = readShaderFromFile("./res/Basic.shader"); 
   unsigned int program = CreateShaders(s);
   glUseProgram(program);
@@ -126,7 +134,7 @@ int main(void) {
     glClear(GL_COLOR_BUFFER_BIT);
 
     // draw selected buffer
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr); 
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
