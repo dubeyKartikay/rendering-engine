@@ -1,2 +1,4 @@
-all:
-	g++ main.cpp -lglfw3 -lGL -lGLEW
+out : 
+	make -C ./src/
+run: out
+	./src/a.out

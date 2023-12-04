@@ -1,14 +1,49 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
+#include <algorithm>
+#include <asm-generic/errno-base.h>
 #include <cstdlib>
+#include <filesystem>
 #include <iostream>
+#include <ostream>
+#include <sstream>
 #include <stdexcept>
 #include <string>
+#include <fstream>
 
 #define VERT_ATTRIB_POSITON 0
 #define VERT_ATTRIB_POSITON_NCOMP 2
 #define SHADER_ERROR_MESG_BUFF_SIZE 2048
+
+struct ShaderSource{
+  std::string vertex_shader;
+  std::string fragment_shader;
+};
+
+ShaderSource readShaderFromFile(std::filesystem::path path){
+  enum ShaderType {
+    NONE = -1, VERTEX_SHADER,FRAGMENT_SHADER
+  } currentOpenShader;
+  std::ifstream file (path);
+  std::stringstream shader_sources[2];
+  if(!file.is_open()) {
+    std::cout << "Cannot open File" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+  while (!file.eof()) {
+    std::string buf;
+    std::getline(file,buf);
+    if(buf.find("#shader") != std::string::npos) {
+      if(buf.find("vertex") != std::string::npos) currentOpenShader = ShaderType::VERTEX_SHADER;
+      else currentOpenShader = ShaderType::FRAGMENT_SHADER;
+      continue;
+    }
+    shader_sources[currentOpenShader] << buf << '\n';
+    
+  }
+  return {shader_sources[ShaderType::VERTEX_SHADER].str(),shader_sources[ShaderType::FRAGMENT_SHADER].str()};
+}
 static unsigned int CompileShader(unsigned int type,
                                   const std::string &shader) {
   unsigned int shader_id = glCreateShader(type);
@@ -28,13 +63,12 @@ static unsigned int CompileShader(unsigned int type,
   return shader_id;
 }
 
-static unsigned int CreateShaders(const std::string &vertex_shader,
-                                  const std::string &fragment_shader) {
+static unsigned int CreateShaders(ShaderSource& shader_source) {
   unsigned int program = glCreateProgram();
   unsigned int vertex_shader_id =
-      CompileShader(GL_VERTEX_SHADER, vertex_shader);
+      CompileShader(GL_VERTEX_SHADER, shader_source.vertex_shader);
   unsigned int fragment_shader_id =
-      CompileShader(GL_FRAGMENT_SHADER, fragment_shader);
+      CompileShader(GL_FRAGMENT_SHADER, shader_source.fragment_shader);
   glAttachShader(program, vertex_shader_id);
   glAttachShader(program, fragment_shader_id);
   glLinkProgram(program);
@@ -83,27 +117,8 @@ int main(void) {
   glVertexAttribPointer(VERT_ATTRIB_POSITON, 2, GL_FLOAT, GL_FALSE,
                         2 * sizeof(float), 0);
   glEnableVertexAttribArray(VERT_ATTRIB_POSITON);
-  const std::string vs = R"glsl(
-  #version 330 core
-
-  layout(location = 0) in vec4 position;
-
-  void main(){
-     gl_Position = position;
-  }
-  )glsl";
-
- const std::string fs = R"glsl(
-  #version 330 core
-
-  layout(location = 0) out vec4 color;
-
-  void main(){
-     color = vec4(0.102,0.1059,0.142,1);
-  }
-  )glsl";
-
-  unsigned int program = CreateShaders(vs, fs);
+  ShaderSource s = readShaderFromFile("./res/Basic.shader"); 
+  unsigned int program = CreateShaders(s);
   glUseProgram(program);
 
   while (!glfwWindowShouldClose(window)) {
@@ -116,6 +131,7 @@ int main(void) {
     glfwPollEvents();
   }
 
+  glDeleteProgram(program);
   glfwTerminate();
   return 0;
 }
