@@ -15,6 +15,9 @@
 #define VERT_ATTRIB_POSITON 0
 #define VERT_ATTRIB_POSITON_NCOMP 2
 #define SHADER_ERROR_MESG_BUFF_SIZE 2048
+#ifndef SHADER_DIR
+#define SHADER_DIR
+#endif
 
 void APIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
                                      GLenum severity, GLsizei length,
@@ -118,6 +121,10 @@ struct ShaderSource {
 };
 
 ShaderSource readShaderFromFile(std::filesystem::path path) {
+  if(SHADER_DIR == 0){
+    std::cout << "Shaders not defined" << std::endl;
+    exit(EXIT_FAILURE);
+  }
   enum ShaderType {
     NONE = -1,
     VERTEX_SHADER,
@@ -126,7 +133,8 @@ ShaderSource readShaderFromFile(std::filesystem::path path) {
   std::ifstream file(path);
   std::stringstream shader_sources[2];
   if (!file.is_open()) {
-    std::cout << "Cannot open File" << std::endl;
+
+    std::cout << "Cannot open File: " << SHADER_DIR << std::endl;
     exit(EXIT_FAILURE);
   }
   while (!file.eof()) {
@@ -236,7 +244,7 @@ int main(void) {
                         2 * sizeof(float), 0);
   glEnableVertexAttribArray(VERT_ATTRIB_POSITON);
 
-  ShaderSource s = readShaderFromFile("./res/Basic.shader");
+  ShaderSource s = readShaderFromFile(SHADER_DIR "Basic.shader");
   unsigned int program = CreateShaders(s);
   glUseProgram(program);
   int u_Color_loc = glGetUniformLocation(program, "u_Color");
