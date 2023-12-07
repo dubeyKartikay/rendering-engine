@@ -64,17 +64,14 @@ int main(void) {
   va_layout->Push<float>(2);
   va->AddBuffer(*vb, *va_layout);
   
-  ShaderSource s = readShaderFromFile(SHADER_DIR "Basic.shader");
-  unsigned int program = CreateShaders(s);
-  glUseProgram(program);
-  int u_Color_loc = glGetUniformLocation(program, "u_Color");
+  Shader * shader = new Shader(SHADER_DIR "Basic.shader");
 
   float r = 0;
   float inc = 0.05f;
-  glBindBuffer(GL_ARRAY_BUFFER,0);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
-  glBindVertexArray(0);
-  glUseProgram(0);
+  vb->Unbind();
+  id->Unbind();
+  va->Unbind();
+  shader->Unbind();
   while (!glfwWindowShouldClose(window)) {
     /* Render here */
     glClear(GL_COLOR_BUFFER_BIT);
@@ -85,17 +82,18 @@ int main(void) {
       inc = -inc;
     }
     r += inc;
-    glUseProgram(program);
-    glUniform4f(u_Color_loc, r, 0.102, 0.344, 1.0);
-    // draw selected buffer
+    shader->Bind();
+    shader->setUniform4f("u_Color", r, 0.102, 0.344, 1);
     va->Bind();
     id->Bind();
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
-
-  glDeleteProgram(program);
   glfwTerminate();
+  delete va;
+  delete vb;
+  delete id;
+  delete shader;
   return 0;
 }

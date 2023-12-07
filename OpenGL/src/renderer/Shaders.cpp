@@ -1,5 +1,23 @@
 #include <Shaders.hpp>
-ShaderSource readShaderFromFile(std::filesystem::path path) {
+
+Shader::Shader(const std::filesystem::path &path){
+  m_ShaderSource = readShaderFromFile(path);
+  m_RendererID =  CreateShaders(m_ShaderSource);
+}
+Shader::~Shader(){
+  glDeleteProgram(m_RendererID);
+}
+void Shader::Bind() const{
+  glUseProgram(m_RendererID);
+}
+void Shader::Unbind() const{
+  glUseProgram(0);
+}
+void Shader::setUniform4f(const std::string &name, float v0,float v1,float v2, float v3){
+  glUniform4f(GetUniformLocation(name),v0,v1,v2,v3); 
+}
+
+ShaderSource Shader::readShaderFromFile(std::filesystem::path path) {
   if (SHADER_DIR == 0) {
     std::cout << "Shaders not defined" << std::endl;
     exit(EXIT_FAILURE);
@@ -33,7 +51,7 @@ ShaderSource readShaderFromFile(std::filesystem::path path) {
 }
 
 
-unsigned int CompileShader(unsigned int type, const std::string &shader) {
+unsigned int Shader::CompileShader(unsigned int type, const std::string &shader) {
   unsigned int shader_id = glCreateShader(type);
   const char *shader_src = shader.c_str();
   glShaderSource(shader_id, 1, &shader_src, NULL);
@@ -51,7 +69,7 @@ unsigned int CompileShader(unsigned int type, const std::string &shader) {
   return shader_id;
 }
 
-unsigned int CreateShaders(ShaderSource &shader_source) {
+unsigned int Shader::CreateShaders(ShaderSource &shader_source) {
   unsigned int program = glCreateProgram();
   unsigned int vertex_shader_id =
       CompileShader(GL_VERTEX_SHADER, shader_source.vertex_shader);
