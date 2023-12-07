@@ -1,10 +1,10 @@
-#include <Shaders.hpp>
-#include <GLUtils.hpp>
-#include <VertexBuffer.hpp>
-#include <IndexBuffer.hpp>
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <GLFW/glfw3.h>
+#include <GLUtils.hpp>
+#include <IndexBuffer.hpp>
+#include <Shaders.hpp>
+#include <VertexArray.hpp>
+#include <VertexBuffer.hpp>
 #include <algorithm>
 #include <cstdlib>
 #include <filesystem>
@@ -17,7 +17,6 @@
 #ifndef SHADER_DIR
 #define SHADER_DIR
 #endif
-
 
 int main(void) {
   GLFWwindow *window;
@@ -51,33 +50,20 @@ int main(void) {
   }
 
   std::cout << glGetString(GL_VERSION) << std::endl;
-  float positions[] = {-0.5f, -0.5, 0.5f, 0.5f, 0.5f, -0.5f, -0.5f, 0.5f};
+  float positions[] = {-0.5f, -0.5f, 0.5f, 0.5f, 0.5f, -0.5f, -0.5f, 0.5f};
   unsigned int indices[] = {0, 1, 2, 0, 1, 3};
-  unsigned int buffer_id;
-  unsigned int index_buffer_id;
-  unsigned int vertex_array_obj_id;
 
   glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
   glDebugMessageCallback(GLDebugMessageCallback, NULL);
 
+  VertexBuffer *vb = new VertexBuffer(positions, 8 * sizeof(float));
+  IndexBuffer *id = new IndexBuffer(indices, 6);
 
-
-  VertexBuffer * vb = new VertexBuffer(positions,8*sizeof(float));
-  IndexBuffer * id = new IndexBuffer(indices,6);
-
-
-  glGenVertexArrays(1, &vertex_array_obj_id);
+  VertexArray *va = new VertexArray();
+  VertexBufferLayout *va_layout = new VertexBufferLayout();
+  va_layout->Push<float>(2);
+  va->AddBuffer(*vb, *va_layout);
   
-
-  // select buffer
-  glBindVertexArray(vertex_array_obj_id);
-  
-  // define buffer layout
-  glVertexAttribPointer(VERT_ATTRIB_POSITON, 2, GL_FLOAT, GL_FALSE,
-                        2 * sizeof(float), 0);
-  
-  glEnableVertexAttribArray(VERT_ATTRIB_POSITON);
-
   ShaderSource s = readShaderFromFile(SHADER_DIR "Basic.shader");
   unsigned int program = CreateShaders(s);
   glUseProgram(program);
@@ -85,6 +71,10 @@ int main(void) {
 
   float r = 0;
   float inc = 0.05f;
+  glBindBuffer(GL_ARRAY_BUFFER,0);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+  glBindVertexArray(0);
+  glUseProgram(0);
   while (!glfwWindowShouldClose(window)) {
     /* Render here */
     glClear(GL_COLOR_BUFFER_BIT);
@@ -94,9 +84,12 @@ int main(void) {
     if (r < 0) {
       inc = -inc;
     }
-    glUniform4f(u_Color_loc, r, 0.102, 0.344, 1.0);
     r += inc;
+    glUseProgram(program);
+    glUniform4f(u_Color_loc, r, 0.102, 0.344, 1.0);
     // draw selected buffer
+    va->Bind();
+    id->Bind();
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     glfwSwapBuffers(window);
     glfwPollEvents();
