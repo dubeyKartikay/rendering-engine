@@ -1,4 +1,4 @@
-#ifndef IndexBuffer
+#ifndef INDEX_BUFFER
 #define INDEX_BUFFER
 class IndexBuffer {
 private:

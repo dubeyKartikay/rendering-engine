@@ -5,6 +5,7 @@
 #include <Shaders.hpp>
 #include <VertexArray.hpp>
 #include <VertexBuffer.hpp>
+#include <Renderer.hpp>
 #define VERT_ATTRIB_POSITON 0
 #define VERT_ATTRIB_POSITON_NCOMP 2
 #ifndef SHADER_DIR
@@ -58,7 +59,7 @@ int main(void) {
   va->AddBuffer(*vb, *va_layout);
   
   Shader * shader = new Shader(SHADER_DIR "Basic.shader");
-
+  Renderer renderer;
   float r = 0;
   float inc = 0.05f;
   vb->Unbind();
@@ -66,8 +67,7 @@ int main(void) {
   va->Unbind();
   shader->Unbind();
   while (!glfwWindowShouldClose(window)) {
-    /* Render here */
-    glClear(GL_COLOR_BUFFER_BIT);
+    renderer.Clear();
     if (r >= 1) {
       inc = -inc;
     }
@@ -77,9 +77,7 @@ int main(void) {
     r += inc;
     shader->Bind();
     shader->setUniform4f("u_Color", r, 0.102, 0.344, 1);
-    va->Bind();
-    id->Bind();
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    renderer.Draw(*va, *id, *shader);  
     glfwSwapBuffers(window);
     glfwPollEvents();
   }

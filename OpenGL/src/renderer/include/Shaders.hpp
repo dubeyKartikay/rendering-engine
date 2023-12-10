@@ -1,11 +1,10 @@
 #ifndef SHADERS
 #define SHADERS
-#include <GL/glew.h>
 #include <filesystem>
-#include <fstream>
-#include <iostream>
 #include <string>
 #include <unordered_map>
+#include <GL/glew.h>
+#include <iostream>
 #ifndef SHADER_ERROR_MESG_BUFF_SIZE
 #define SHADER_ERROR_MESG_BUFF_SIZE 2048
 #endif
@@ -25,7 +24,7 @@ private:
   unsigned int CompileShader(unsigned int type, const std::string &shader);
   ShaderSource readShaderFromFile(std::filesystem::path path);
   int GetUniformLocation(const std::string &name);
-
+  
 public:
   Shader(const std::filesystem::path &path);
   ~Shader();

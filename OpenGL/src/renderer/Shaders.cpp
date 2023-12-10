@@ -1,5 +1,5 @@
 #include <Shaders.hpp>
-
+#include <fstream>
 Shader::Shader(const std::filesystem::path &path) {
   m_ShaderSource = readShaderFromFile(path);
   m_RendererID = CreateShaders(m_ShaderSource);
@@ -18,7 +18,6 @@ int Shader::GetUniformLocation(const std::string &name) {
     return cache_search->second;
   }
   int location = glGetUniformLocation(m_RendererID, name.c_str());
-  uniform_loc_cache[name] = location;
   return location;
 }
 

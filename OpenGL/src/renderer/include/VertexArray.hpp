@@ -1,8 +1,7 @@
-#include<VertexBuffer.hpp>
-#include <VertexBufferLayout.hpp>
 #ifndef VERTEX_ARRAY
 #define VERTEX_ARRAY
-
+#include<VertexBuffer.hpp>
+#include <VertexBufferLayout.hpp>
 class VertexArray{
   private:
     unsigned int m_RendererId;

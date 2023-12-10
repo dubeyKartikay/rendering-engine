@@ -1,7 +1,8 @@
 #include <vector>
-#ifndef VERTEX_BUFFER_LAYOUT
 #include <GL/gl.h>
 #include <cassert>
+#ifndef VERTEX_BUFFER_LAYOUT
+#define VERTEX_BUFFER_LAYOUT
 #define assertm(exp, msg) assert(((void)msg, exp))
 struct VertexBufferAttribs {
   unsigned int type;
