@@ -1,20 +1,25 @@
 #include <Shaders.hpp>
 
-Shader::Shader(const std::filesystem::path &path){
+Shader::Shader(const std::filesystem::path &path) {
   m_ShaderSource = readShaderFromFile(path);
-  m_RendererID =  CreateShaders(m_ShaderSource);
+  m_RendererID = CreateShaders(m_ShaderSource);
 }
-Shader::~Shader(){
-  glDeleteProgram(m_RendererID);
+Shader::~Shader() { glDeleteProgram(m_RendererID); }
+void Shader::Bind() const { glUseProgram(m_RendererID); }
+void Shader::Unbind() const { glUseProgram(0); }
+void Shader::setUniform4f(const std::string &name, float v0, float v1, float v2,
+                          float v3) {
+  glUniform4f(GetUniformLocation(name), v0, v1, v2, v3);
 }
-void Shader::Bind() const{
-  glUseProgram(m_RendererID);
-}
-void Shader::Unbind() const{
-  glUseProgram(0);
-}
-void Shader::setUniform4f(const std::string &name, float v0,float v1,float v2, float v3){
-  glUniform4f(GetUniformLocation(name),v0,v1,v2,v3); 
+
+int Shader::GetUniformLocation(const std::string &name) {
+  if (auto cache_search = uniform_loc_cache.find(name);
+      cache_search != uniform_loc_cache.end()) {
+    return cache_search->second;
+  }
+  int location = glGetUniformLocation(m_RendererID, name.c_str());
+  uniform_loc_cache[name] = location;
+  return location;
 }
 
 ShaderSource Shader::readShaderFromFile(std::filesystem::path path) {
@@ -50,8 +55,8 @@ ShaderSource Shader::readShaderFromFile(std::filesystem::path path) {
           shader_sources[ShaderType::FRAGMENT_SHADER].str()};
 }
 
-
-unsigned int Shader::CompileShader(unsigned int type, const std::string &shader) {
+unsigned int Shader::CompileShader(unsigned int type,
+                                   const std::string &shader) {
   unsigned int shader_id = glCreateShader(type);
   const char *shader_src = shader.c_str();
   glShaderSource(shader_id, 1, &shader_src, NULL);

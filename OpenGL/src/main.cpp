@@ -5,17 +5,10 @@
 #include <Shaders.hpp>
 #include <VertexArray.hpp>
 #include <VertexBuffer.hpp>
-#include <algorithm>
-#include <cstdlib>
-#include <filesystem>
-#include <iostream>
-#include <stdexcept>
-#include <string>
-
 #define VERT_ATTRIB_POSITON 0
 #define VERT_ATTRIB_POSITON_NCOMP 2
 #ifndef SHADER_DIR
-#define SHADER_DIR
+#define SHADER_DIR 0
 #endif
 
 int main(void) {

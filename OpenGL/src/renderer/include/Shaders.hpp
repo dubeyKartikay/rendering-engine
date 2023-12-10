@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <unordered_map>
 #ifndef SHADER_ERROR_MESG_BUFF_SIZE
 #define SHADER_ERROR_MESG_BUFF_SIZE 2048
 #endif
@@ -18,13 +19,13 @@ class Shader {
 private:
   ShaderSource m_ShaderSource;
   unsigned int m_RendererID;
+  std::unordered_map<std::string,int> uniform_loc_cache;
+
   unsigned int CreateShaders(ShaderSource &shader_source);
   unsigned int CompileShader(unsigned int type, const std::string &shader);
   ShaderSource readShaderFromFile(std::filesystem::path path);
-  unsigned int GetUniformLocation(const std::string &name){
-   unsigned int location = glGetUniformLocation(m_RendererID,name.c_str());
-   return location;
-  }
+  int GetUniformLocation(const std::string &name);
+
 public:
   Shader(const std::filesystem::path &path);
   ~Shader();
