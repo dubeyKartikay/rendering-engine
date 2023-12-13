@@ -3,5 +3,7 @@
 #   ./VertexBuffer.cpp
 #   )
 file(GLOB SOURCES "./*.cpp")
+file (GLOB VENDOR_SOURCES "./include/vendor/*/*.cpp")
 include_directories(renderer PUBLIC "./include/")
-add_library(renderer ${SOURCES})
+include_directories(renderer PUBLIC "./include/vendor/")
+add_library(renderer ${SOURCES} ${VENDOR_SOURCES})

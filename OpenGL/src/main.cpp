@@ -1,3 +1,4 @@
+#include "Texture.hpp"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <GLUtils.hpp>
@@ -44,22 +45,32 @@ int main(void) {
   }
 
   std::cout << glGetString(GL_VERSION) << std::endl;
-  float positions[] = {-0.5f, -0.5f, 0.5f, 0.5f, 0.5f, -0.5f, -0.5f, 0.5f};
+  float positions[] = {-0.5f, -0.5f, 0.0f, 0.0f,
+                        0.5f, 0.5f, 1.0f, 1.0f,
+                        0.5f, -0.5f, 1.0f, 0.0,
+                        -0.5f, 0.5f, 0.0f, 1.0f
+  };
   unsigned int indices[] = {0, 1, 2, 0, 1, 3};
 
   glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
   glDebugMessageCallback(GLDebugMessageCallback, NULL);
 
-  VertexBuffer *vb = new VertexBuffer(positions, 8 * sizeof(float));
+  VertexBuffer *vb = new VertexBuffer(positions, 4*4 * sizeof(float));
   IndexBuffer *id = new IndexBuffer(indices, 6);
 
   VertexArray *va = new VertexArray();
   VertexBufferLayout *va_layout = new VertexBufferLayout();
   va_layout->Push<float>(2);
+  va_layout->Push<float>(2);
   va->AddBuffer(*vb, *va_layout);
   
   Shader * shader = new Shader(SHADER_DIR "Basic.shader");
   Renderer renderer;
+  
+  Texture * texture = new Texture(SHADER_DIR "background.png");
+  texture->Bind();
+  shader->setUniform1i("u_Texture",0);
+
   float r = 0;
   float inc = 0.05f;
   vb->Unbind();

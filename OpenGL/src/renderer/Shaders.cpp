@@ -12,6 +12,9 @@ void Shader::setUniform4f(const std::string &name, float v0, float v1, float v2,
   glUniform4f(GetUniformLocation(name), v0, v1, v2, v3);
 }
 
+void Shader::setUniform1i(const std::string &name,int value){
+  glUniform1i(GetUniformLocation(name),value);
+}
 int Shader::GetUniformLocation(const std::string &name) {
   if (auto cache_search = uniform_loc_cache.find(name);
       cache_search != uniform_loc_cache.end()) {
@@ -89,3 +92,5 @@ unsigned int Shader::CreateShaders(ShaderSource &shader_source) {
 
   return program;
 }
+
+
