@@ -1,5 +1,6 @@
 #include <Shaders.hpp>
 #include <fstream>
+#include <iostream>
 Shader::Shader(const std::filesystem::path &path) {
   m_ShaderSource = readShaderFromFile(path);
   m_RendererID = CreateShaders(m_ShaderSource);
@@ -15,6 +16,10 @@ void Shader::setUniform4f(const std::string &name, float v0, float v1, float v2,
 void Shader::setUniform1i(const std::string &name,int value){
   glUniform1i(GetUniformLocation(name),value);
 }
+void Shader::setUniformMat4f(const std::string &name,const glm::mat4& mat){
+  glUniformMatrix4fv(GetUniformLocation(name),1,GL_FALSE,&mat[0][0]);
+}
+
 int Shader::GetUniformLocation(const std::string &name) {
   if (auto cache_search = uniform_loc_cache.find(name);
       cache_search != uniform_loc_cache.end()) {

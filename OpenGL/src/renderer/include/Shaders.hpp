@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 #include <GL/glew.h>
-#include <iostream>
+#include <glm/glm.hpp>
 #ifndef SHADER_ERROR_MESG_BUFF_SIZE
 #define SHADER_ERROR_MESG_BUFF_SIZE 2048
 #endif
@@ -32,6 +32,7 @@ public:
   void Unbind() const;
   void setUniform4f(const std::string &name, float v0,float v1,float v2, float v3);
   void setUniform1i(const std::string &name,int value);
+  void setUniformMat4f(const std::string &name,const glm::mat4& mat);
 };
 
 #endif // !SHADERS

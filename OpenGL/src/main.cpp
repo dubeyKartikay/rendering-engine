@@ -7,6 +7,10 @@
 #include <VertexArray.hpp>
 #include <VertexBuffer.hpp>
 #include <Renderer.hpp>
+#include <glm/ext/matrix_clip_space.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #define VERT_ATTRIB_POSITON 0
 #define VERT_ATTRIB_POSITON_NCOMP 2
 #ifndef SHADER_DIR
@@ -27,7 +31,7 @@ int main(void) {
   glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
   /* Create a windowed mode window and its OpenGL context */
-  window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+  window = glfwCreateWindow(2560/2, 1440/2, "Hello World", NULL, NULL);
   if (!window) {
     std::cout << "Unable to create a window" << std::endl;
     const char *description;
@@ -65,13 +69,16 @@ int main(void) {
   va_layout->Push<float>(2);
   va->AddBuffer(*vb, *va_layout);
   
+  glm::mat4 proj = glm::ortho(-1.6f,1.6f,-0.9f,0.9f,-1.0f,1.0f);
+
   Shader * shader = new Shader(SHADER_DIR "Basic.shader");
   Renderer renderer;
   
   Texture * texture = new Texture(SHADER_DIR "background.png");
   texture->Bind();
+  shader->Bind();
   shader->setUniform1i("u_Texture",0);
-
+  shader->setUniformMat4f("u_MVP",proj);
   float r = 0;
   float inc = 0.05f;
   vb->Unbind();
@@ -88,7 +95,7 @@ int main(void) {
     }
     r += inc;
     shader->Bind();
-    shader->setUniform4f("u_Color", r, 0.102, 0.344, 1);
+//    shader->setUniform4f("u_Color", r, 0.102, 0.344, 1);
     renderer.Draw(*va, *id, *shader);  
     glfwSwapBuffers(window);
     glfwPollEvents();
