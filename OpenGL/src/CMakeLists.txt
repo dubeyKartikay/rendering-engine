@@ -7,4 +7,5 @@ target_link_libraries(open_gl PUBLIC GL)
 target_link_libraries(open_gl PUBLIC glfw3)
 target_link_libraries(open_gl PUBLIC GLEW)
 target_link_libraries(open_gl PUBLIC renderer)
+target_link_libraries(open_gl PUBLIC tests)
 

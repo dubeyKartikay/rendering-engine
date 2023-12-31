@@ -1,5 +1,3 @@
-#include "TestFrame.hpp"
-#include "tests/include/Test.hpp"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <GLUtils.hpp>
@@ -9,6 +7,12 @@
 #include <Texture.hpp>
 #include <VertexArray.hpp>
 #include <VertexBuffer.hpp>
+#include <TestCamera3D.hpp>
+#include <TestCube3D.hpp>
+#include <TestFrame.hpp>
+#include <TestRect2D.hpp>
+#include <TestTexture2D.hpp>
+#include <TestTexture3D.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -67,24 +71,22 @@ int main(void) {
   glDebugMessageCallback(GLDebugMessageCallback, NULL);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   std::cout << glGetString(GL_VERSION) << std::endl;
-  // Test tests;
-  // test.AddTest(TestRect2D());
-  // test.AddTest(TestCube3D());
-  // test.AddTest(TestTexture2D());
-  // test.AddTest(TestTexture3D());
-  // test.AddTest(TestCamera3D());
-  // while (!glfwWindowShouldClose(window)) {
-  //   ImGui_ImplOpenGL3_NewFrame();
-  //   ImGui_ImplGlfw_NewFrame();
-  //   ImGui::NewFrame();
-  //   tests.Clear();
-  //   tests.Render();
-  //   tests.ImGuiRender();
-  //   ImGui::Render();
-  //   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-  //   glfwSwapBuffers(window);
-  //   glfwPollEvents();
-  // }
+  TestFrame tests;
+  tests.AddTest(new TestRect2D());
+  tests.AddTest(new TestCube3D());
+  tests.AddTest(new TestTexture2D());
+  while (!glfwWindowShouldClose(window)) {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+    tests.Clear();
+    tests.Render();
+    tests.ImGuiRender();
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+  }
   TestFrame tf;
   tf.AddTest(new TestFrame());
   ImGui_ImplOpenGL3_Shutdown();
