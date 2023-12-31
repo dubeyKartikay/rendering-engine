@@ -1,0 +1,5 @@
+file(GLOB SOURCES "./*.cpp")
+file (GLOB VENDOR_SOURCES "./include/vendor/*/*.cpp")
+include_directories(tests PUBLIC "./include/")
+include_directories(tests PUBLIC "./include/vendor/")
+add_library(tests ${SOURCES} ${VENDOR_SOURCES})
