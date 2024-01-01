@@ -13,7 +13,12 @@ private:
   Shader *m_Shader;
   IndexBuffer *m_indexBuffer;
   Texture* m_Texture;
+  glm::mat4 m_View;
+  glm::mat4 m_Projection;
   glm::mat4 m_Model;
+  glm::vec3 m_RotationAxis;
+  float m_RotationAngle;
+  glm::vec3 m_Translate;
   char m_texturePath[1024];
 
 public:

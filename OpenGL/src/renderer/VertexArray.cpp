@@ -23,4 +23,6 @@ void VertexArray::AddBuffer(VertexBuffer &vb, VertexBufferLayout &layout) {
 #pragma GCC diagnostic pop
     offset += element.count * VertexBufferAttribs::GetTypeSize(element.type);
   }
+  Unbind();
+  vb.Unbind();
 }

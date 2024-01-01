@@ -26,6 +26,7 @@
 #define SHADER_DIR 0
 #endif
 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 int main(void) {
   GLFWwindow *window;
   std::cout << "Started program" << std::endl;
@@ -40,7 +41,7 @@ int main(void) {
   glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
   /* Create a windowed mode window and its OpenGL context */
-  window = glfwCreateWindow(2560 / 2, 1440 / 2, "Hello World", NULL, NULL);
+  window = glfwCreateWindow(800, 600, "Hello World", NULL, NULL);
   if (!window) {
     std::cout << "Unable to create a window" << std::endl;
     const char *description;
@@ -49,6 +50,7 @@ int main(void) {
     return -1;
   }
   glfwMakeContextCurrent(window);
+   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
   glfwSwapInterval(2);
   if (glewInit() != GLEW_OK) {
     std::cout << "GLEW INIT ERROR" << std::endl;
@@ -95,4 +97,10 @@ int main(void) {
 
   glfwTerminate();
   return 0;
+}
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    // make sure the viewport matches the new window dimensions; note that width and 
+    // height will be significantly larger than specified on retina displays.
+    glViewport(0, 0, width, height);
 }

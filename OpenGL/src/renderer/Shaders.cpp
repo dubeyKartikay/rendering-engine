@@ -1,5 +1,6 @@
 #include <Shaders.hpp>
 #include <fstream>
+#include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 Shader::Shader(const std::filesystem::path &path) {
   m_ShaderSource = readShaderFromFile(path);
@@ -17,7 +18,7 @@ void Shader::setUniform1i(const std::string &name,int value){
   glUniform1i(GetUniformLocation(name),value);
 }
 void Shader::setUniformMat4f(const std::string &name,const glm::mat4& mat){
-  glUniformMatrix4fv(GetUniformLocation(name),1,GL_FALSE,&mat[0][0]);
+  glUniformMatrix4fv(GetUniformLocation(name),1,GL_FALSE,glm::value_ptr(mat));
 }
 
 int Shader::GetUniformLocation(const std::string &name) {
