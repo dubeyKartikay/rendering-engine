@@ -72,8 +72,8 @@ int main(void) {
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   std::cout << glGetString(GL_VERSION) << std::endl;
   TestFrame tests;
-  tests.AddTest(new TestRect2D());
   tests.AddTest(new TestCube3D());
+  tests.AddTest(new TestRect2D());
   tests.AddTest(new TestTexture2D());
   while (!glfwWindowShouldClose(window)) {
     ImGui_ImplOpenGL3_NewFrame();

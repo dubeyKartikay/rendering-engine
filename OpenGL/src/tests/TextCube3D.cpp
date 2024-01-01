@@ -13,9 +13,10 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/fwd.hpp>
 #include <glm/glm.hpp>
+#include <iostream>
 
 TestCube3D::TestCube3D() {
-  m_Shader = new Shader(SHADER_DIR "TestRect2D.shader");
+  m_Shader = new Shader(SHADER_DIR "TestCube3D.shader");
   float positions[] = {-0.5f,
                        0.5f,
                        0.5f,
@@ -79,24 +80,31 @@ TestCube3D::TestCube3D() {
   strcpy(m_texturePath, SHADER_DIR "background.png");
   m_Texture = new Texture(m_texturePath);
   Renderer::GetRenderer()->EnableDepthTesting();
+
+
+  m_Shader->Bind();
+  m_Shader->setUniform1i("u_Texture", 0);
+  m_Shader->setUniformMat4f("u_Projection", projection);
+  m_Shader->setUniformMat4f("u_View", view);
 }
 void TestCube3D::Update(){
  m_Model = glm::rotate(m_Model, (float)glfwGetTime()*glm::radians(50.0f), glm::vec3(0.5f,1.0f,0.0f)); 
 }
 void TestCube3D::Render() {
-
+  std::cout << "RENDER CUBE" << std::endl;
   m_Shader->Bind();
   m_vertArray->Bind();
   m_indexBuffer->Bind();
   m_Texture->Bind(0);
-  m_Shader->setUniform1i("u_Texture", 0);
   m_Shader->setUniformMat4f("u_Model", m_Model);
   Renderer *renderer = Renderer::GetRenderer();
   renderer->Clear();
   renderer->Draw(*m_vertArray, *m_indexBuffer, *m_Shader);
 }
 
-void TestCube3D::ImGuiRender() {}
+void TestCube3D::ImGuiRender() {
+  ImGui::Text("Cube 3D");
+}
 
 TestCube3D::~TestCube3D() {
   delete m_vertBuffer;

@@ -5,6 +5,7 @@
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
 #include <Test.hpp>
+#include <glm/fwd.hpp>
 
 #ifndef SHADER_DIR
 #define SHADER_DIR 0
@@ -16,7 +17,7 @@ private:
   VertexBuffer * m_vertBuffer;
   Shader * m_Shader;
   IndexBuffer * m_indexBuffer;
-  float m_rectColor[4];
+  glm::vec4 m_rectColor;
 public:
   TestRect2D();
   void Render() override;

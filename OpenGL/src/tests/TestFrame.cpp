@@ -1,3 +1,4 @@
+#include<iostream>
 #include "vendor/imgui/imgui.h"
 #include <TestFrame.hpp>
 #include <typeinfo>
@@ -25,8 +26,11 @@ void TestFrame::TestFrameImGuiRender() {
   if (ImGui::BeginCombo("Options", typeid(m_CurrTest).name())) {
     for (int i = 0; i < m_Tests.size(); i++) {
       bool isSelected = (m_CurrTest == m_Tests[i]);
-      if (ImGui::Selectable(typeid(m_Tests[i]).name(), isSelected))
+      if (ImGui::Selectable(typeid(m_Tests[i]).name(), isSelected)){
         m_CurrTest=m_Tests[i];
+      std::cout << "message " << i  << std::endl;
+      }
+        
       if (isSelected)
         ImGui::SetItemDefaultFocus();
     }

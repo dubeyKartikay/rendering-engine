@@ -6,7 +6,8 @@
 #include <TestRect2D.hpp>
 #include <VertexBufferLayout.hpp>
 #include <VertexBuffer.hpp>
-
+#include <glm/ext/quaternion_geometric.hpp>
+#include <glm/gtc/type_ptr.hpp>
 TestRect2D::TestRect2D(): m_rectColor {1.0f,1.0f,1.0f,1.0f} {
  m_Shader = new Shader(SHADER_DIR "TestRect2D.shader");
 float positions[] ={
@@ -38,7 +39,8 @@ void TestRect2D::Render(){
 }
 
 void TestRect2D::ImGuiRender(){
-  ImGui::ColorEdit4("Rectangle Color", m_rectColor);
+  ImGui::ColorEdit4("Rectangle Color",glm::value_ptr(m_rectColor));
+  m_rectColor=glm::normalize(m_rectColor);
 }
 
 TestRect2D::~TestRect2D(){
