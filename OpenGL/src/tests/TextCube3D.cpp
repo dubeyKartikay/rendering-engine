@@ -20,10 +20,10 @@ TestCube3D::TestCube3D() : m_Model(1.0f), m_View(1.0f), m_Projection(1.0f), m_Tr
   m_Shader = new Shader(SHADER_DIR "TestCube3D.shader");
   float positions[] = {
       // positions          // texture coords
-      0.5f,  0.5f,  0.0f, 1.0f, 1.0f, // top right
-      0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, // bottom right
-      -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // bottom left
-      -0.5f, 0.5f,  0.0f, 0.0f, 1.0f,  // top left
+      0.5f,  0.5f,  0.5f, 1.0f, 1.0f, // top right
+      0.5f,  -0.5f, 0.5f, 1.0f, 0.0f, // bottom right
+      -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, // bottom left
+      -0.5f, 0.5f,  0.5f, 0.0f, 1.0f,  // top left
 
 
       0.5f,  0.5f,  -0.5f, 0.0f, 1.0f, // top right
@@ -45,7 +45,7 @@ TestCube3D::TestCube3D() : m_Model(1.0f), m_View(1.0f), m_Projection(1.0f), m_Tr
   m_Texture = new Texture(m_texturePath);
   Renderer::GetRenderer()->EnableDepthTesting();
   m_RotationAngle = 0.0f;
-
+  m_Translate = glm::vec3(0.0f,0.0f,-3.0f);
   // m_Model =
   //     glm::rotate(m_Model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f,
   //     0.0f));
@@ -68,11 +68,9 @@ TestCube3D::TestCube3D() : m_Model(1.0f), m_View(1.0f), m_Projection(1.0f), m_Tr
   m_Shader->setUniformMat4f("u_View", m_View);
   m_Shader->Unbind();
 }
-void TestCube3D::Update() {
-  // m_Model = glm::rotate(m_Model, (float)glfwGetTime() * glm::radians(50.0f),
-  //                       glm::vec3(0.5f, 1.0f, 0.0f));
-  m_Model= glm::mat4(1.0f);
-  m_Model = glm::rotate(m_Model, glm::radians(m_RotationAngle), m_RotationAxis);
+void TestCube3D::Update(float deltaTime ) {
+  m_Model = glm::rotate(m_Model, (float)glfwGetTime() * glm::radians(50.0f) *deltaTime,
+                        glm::vec3(0.5f, 1.0f, 0.0f));
   m_View = glm::mat4(1.0f);
   m_View = glm::translate(m_View, m_Translate);
 }
@@ -93,9 +91,9 @@ void TestCube3D::Render() {
 
 void TestCube3D::ImGuiRender() {
   ImGui::Text("Cube 3D");
-  ImGui::SliderFloat3("Rotation Axis", glm::value_ptr(m_RotationAxis), -1.0f,
-                      1.0f);
-  ImGui::SliderFloat("Rotation Angle", &m_RotationAngle, -180.0f, 180.0f);
+  // ImGui::SliderFloat3("Rotation Axis", glm::value_ptr(m_RotationAxis), -1.0f,
+  //                     1.0f);
+  // ImGui::SliderFloat("Rotation Angle", &m_RotationAngle, -180.0f, 180.0f);
   ImGui::SliderFloat3("translate", glm::value_ptr(m_Translate), -100.0f,
                       100.0f);
 }

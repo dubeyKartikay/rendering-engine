@@ -22,7 +22,7 @@ private:
   char m_texturePath[1024];
 
 public:
-  void Update() override;
+  void Update(float deltaTime = 1.0f) override;
   TestCube3D();
   void Render() override;
   void ImGuiRender() override;
