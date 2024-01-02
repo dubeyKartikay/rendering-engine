@@ -8,5 +8,6 @@ public:
   void Render() override;
   void ImGuiRender() override;
   ~TestTexture3D();
+  const char * GetName() override {return "TestTexture3D";}
 };
 #endif 

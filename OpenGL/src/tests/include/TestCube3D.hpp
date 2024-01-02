@@ -26,6 +26,7 @@ public:
   TestCube3D();
   void Render() override;
   void ImGuiRender() override;
+  const char * GetName() override {return "TestCube3D";}
   ~TestCube3D();
 };
 #endif 

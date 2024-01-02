@@ -17,6 +17,7 @@ public:
   TestTexture2D();
   void Render() override;
   void ImGuiRender() override;
+  const char * GetName() override {return "TestTexture2D";}
   ~TestTexture2D();
 };
 #endif

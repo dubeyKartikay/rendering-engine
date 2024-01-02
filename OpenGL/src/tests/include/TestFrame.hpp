@@ -11,6 +11,7 @@ private:
 public:
   TestFrame();
   void AddTest(Test *newTest);
+  void Update(float deltaTime = 1.0f) override;
   void Render() override;
   void ImGuiRender() override;
   void TestFrameRender();

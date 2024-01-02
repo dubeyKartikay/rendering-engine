@@ -10,7 +10,7 @@
 #include <cstring>
 
 TestTexture2D::TestTexture2D(){
- m_Shader = new Shader(SHADER_DIR "TestRect2D.shader");
+ m_Shader = new Shader(SHADER_DIR "TestTexture2D.shader");
 float positions[] ={
   -0.5f,0.5f,0.0f,1.0f,
   0.5f,0.5f,1.0f,1.0f,
@@ -22,7 +22,7 @@ unsigned int index[] = {
   2,3,0
 };
 
-  m_vertBuffer = new VertexBuffer(positions,8*2*sizeof(float));
+  m_vertBuffer = new VertexBuffer(positions,sizeof(positions));
  m_vertArray = new VertexArray();
  m_indexBuffer = new IndexBuffer(index,6);
  VertexBufferLayout layout;
@@ -50,6 +50,5 @@ TestTexture2D::~TestTexture2D(){
  delete m_vertBuffer;
  delete m_indexBuffer;
  delete m_vertArray;
- delete m_indexBuffer;
  delete m_Texture;
 }

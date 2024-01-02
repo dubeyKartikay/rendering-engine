@@ -34,7 +34,7 @@ TestCube3D::TestCube3D() : m_Model(1.0f), m_View(1.0f), m_Projection(1.0f), m_Tr
   unsigned int index[] = {0, 1, 2, 2, 3, 0, 4, 5, 6, 6, 7, 4, 0, 4, 1, 4, 5, 1,
                           1, 5, 6, 1, 2, 6, 0, 4, 7, 0, 3, 7, 7, 3, 6, 3, 6, 2};
 
-  m_vertBuffer = new VertexBuffer(positions, 4 * 5 * 2 * sizeof(float));
+  m_vertBuffer = new VertexBuffer(positions, sizeof(positions));
   m_vertArray = new VertexArray();
   m_indexBuffer = new IndexBuffer(index, 6*3*2);
   VertexBufferLayout layout;
@@ -69,7 +69,7 @@ TestCube3D::TestCube3D() : m_Model(1.0f), m_View(1.0f), m_Projection(1.0f), m_Tr
   m_Shader->Unbind();
 }
 void TestCube3D::Update(float deltaTime ) {
-  m_Model = glm::rotate(m_Model, (float)glfwGetTime() * glm::radians(50.0f) *deltaTime,
+  m_Model = glm::rotate(m_Model, glm::radians(50.0f) * 2 *deltaTime,
                         glm::vec3(0.5f, 1.0f, 0.0f));
   m_View = glm::mat4(1.0f);
   m_View = glm::translate(m_View, m_Translate);
@@ -102,6 +102,5 @@ TestCube3D::~TestCube3D() {
   delete m_vertBuffer;
   delete m_indexBuffer;
   delete m_vertArray;
-  delete m_indexBuffer;
   delete m_Texture;
 }

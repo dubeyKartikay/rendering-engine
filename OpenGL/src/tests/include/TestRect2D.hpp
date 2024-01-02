@@ -22,6 +22,7 @@ public:
   TestRect2D();
   void Render() override;
   void ImGuiRender() override;
+  const char * GetName() override {return "TestRect2D";}
   ~TestRect2D();
 };
 #endif 

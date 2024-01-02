@@ -8,5 +8,6 @@ public:
   void Render() override;
   void ImGuiRender() override;
   ~TestCamera3D();
+  const char * GetName() override {return "TestCamera3D";}
 };
 #endif 

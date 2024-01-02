@@ -4,15 +4,15 @@
 #include <IndexBuffer.hpp>
 #include <Renderer.hpp>
 #include <Shaders.hpp>
-#include <Texture.hpp>
-#include <VertexArray.hpp>
-#include <VertexBuffer.hpp>
 #include <TestCamera3D.hpp>
 #include <TestCube3D.hpp>
 #include <TestFrame.hpp>
 #include <TestRect2D.hpp>
 #include <TestTexture2D.hpp>
 #include <TestTexture3D.hpp>
+#include <Texture.hpp>
+#include <VertexArray.hpp>
+#include <VertexBuffer.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -26,7 +26,7 @@
 #define SHADER_DIR 0
 #endif
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 int main(void) {
   GLFWwindow *window;
   std::cout << "Started program" << std::endl;
@@ -50,7 +50,7 @@ int main(void) {
     return -1;
   }
   glfwMakeContextCurrent(window);
-   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+  glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
   glfwSwapInterval(2);
   if (glewInit() != GLEW_OK) {
     std::cout << "GLEW INIT ERROR" << std::endl;
@@ -73,34 +73,46 @@ int main(void) {
   glDebugMessageCallback(GLDebugMessageCallback, NULL);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   std::cout << glGetString(GL_VERSION) << std::endl;
+  
+  
   TestFrame tests;
   tests.AddTest(new TestCube3D());
   tests.AddTest(new TestRect2D());
   tests.AddTest(new TestTexture2D());
+
+
+  float deltaTime= 0.0f;
+  float lastFrame = 0.0f;
   while (!glfwWindowShouldClose(window)) {
+
+    float currFrame = glfwGetTime();
+    deltaTime = currFrame- lastFrame;
+    lastFrame = currFrame;
+    
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
+    
     tests.Clear();
+    tests.Update(deltaTime);
     tests.Render();
     tests.ImGuiRender();
+    
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
-  TestFrame tf;
-  tf.AddTest(new TestFrame());
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplGlfw_Shutdown();
   ImGui::DestroyContext();
 
+  glfwDestroyWindow(window);
   glfwTerminate();
   return 0;
 }
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-    // make sure the viewport matches the new window dimensions; note that width and 
-    // height will be significantly larger than specified on retina displays.
-    glViewport(0, 0, width, height);
+void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+  // make sure the viewport matches the new window dimensions; note that width
+  // and height will be significantly larger than specified on retina displays.
+  glViewport(0, 0, width, height);
 }

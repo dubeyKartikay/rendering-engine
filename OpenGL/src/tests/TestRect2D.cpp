@@ -8,6 +8,7 @@
 #include <VertexBuffer.hpp>
 #include <glm/ext/quaternion_geometric.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 TestRect2D::TestRect2D(): m_rectColor {1.0f,1.0f,1.0f,1.0f} {
  m_Shader = new Shader(SHADER_DIR "TestRect2D.shader");
 float positions[] ={
@@ -21,7 +22,7 @@ unsigned int index[] = {
   2,3,0
 };
 
-  m_vertBuffer = new VertexBuffer(positions,8*sizeof(float));
+  m_vertBuffer = new VertexBuffer(positions,sizeof(positions));
  m_vertArray = new VertexArray();
  m_indexBuffer = new IndexBuffer(index,6);
  VertexBufferLayout layout;
@@ -44,8 +45,8 @@ void TestRect2D::ImGuiRender(){
 }
 
 TestRect2D::~TestRect2D(){
+  std::cout<<"TestRect2D destructor called" << std::endl;
  delete m_vertBuffer;
  delete m_indexBuffer;
  delete m_vertArray;
- delete m_indexBuffer;
 }
