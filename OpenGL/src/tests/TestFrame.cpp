@@ -4,8 +4,9 @@
 TestFrame::TestFrame() : m_CurrTest(nullptr) {}
 
 void TestFrame::AddTest(Test *newTest) { m_Tests.push_back(newTest); }
-void TestFrame::Update(float deltaTime){
-  if(m_CurrTest) m_CurrTest->Update(deltaTime);
+void TestFrame::Update(float deltaTime) {
+  if (m_CurrTest)
+    m_CurrTest->Update(deltaTime);
 }
 void TestFrame::Render() {
   if (!m_CurrTest) {
@@ -15,15 +16,15 @@ void TestFrame::Render() {
   m_CurrTest->Render();
 }
 void TestFrame::ImGuiRender() {
-  if (!m_CurrTest) {
-    TestFrameImGuiRender();
-    return;
+  TestFrameImGuiRender();
+  if (m_CurrTest) {
+    m_CurrTest->ImGuiRender();
   }
-  m_CurrTest->ImGuiRender();
 }
 void TestFrame::TestFrameRender() {}
 void TestFrame::TestFrameImGuiRender() {
-  if (ImGui::BeginCombo("Options", m_CurrTest ? m_CurrTest->GetName() : "Select Test")) {
+  if (ImGui::BeginCombo("Options",
+                        m_CurrTest ? m_CurrTest->GetName() : "Select Test")) {
 
     for (int i = 0; i < m_Tests.size(); i++) {
       bool isSelected = (m_CurrTest == m_Tests[i]);
@@ -39,7 +40,7 @@ void TestFrame::TestFrameImGuiRender() {
   }
 }
 TestFrame::~TestFrame() {
-  std::cout<<"TestFrame destructor called" << std::endl;
+  std::cout << "TestFrame destructor called" << std::endl;
   for (auto p : m_Tests) {
     delete p;
   }
