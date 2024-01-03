@@ -19,5 +19,8 @@ class Renderer{
         }
         return renderer;
     }
+    static void Destroy(){
+      delete renderer;
+    }
 };
 #endif // DEBUG

@@ -1,5 +1,6 @@
 #ifndef TESTFRAME
 #define TESTFRAME
+#include "Renderer.hpp"
 #include <Test.hpp>
 #include <vector>
 
@@ -16,7 +17,7 @@ public:
   void ImGuiRender() override;
   void TestFrameRender();
   void TestFrameImGuiRender();
-  void Clear(){};
+  void Clear(){Renderer::GetRenderer()->Clear();};
   ~TestFrame();
 };
 #endif // !TESTFRAME
