@@ -5,20 +5,28 @@
 class Camera{
   private:
     glm::vec3 m_CameraPos;
-    glm::vec3 m_Target;
+    glm::vec3 m_CameraFront;
+    glm::vec3 m_CameraUp;
+    glm::vec3 m_CameraRight;
+    glm::mat4 m_ViewMatrix;
     float m_Yaw;
     float m_Pitch;
-    float m_NegYawClamp;
-    float m_PosYawClamp;
-    float m_NegPitchClamp;
-    float m_PosPitchClamp;
+    float m_LowerYawClamp;
+    float m_UpperYawClamp;
+    float m_LowerPitchClamp;
+    float m_UpperPitchClamp;
   public:
     Camera();
-    void Fit();
-    void FitTransform(Shader & shader);
-    void Translate(const glm::vec3 &direction, float speed);
+    void FitViewMatrix();
+    void FitNSetViewMatrix(Shader & shader);
+    void Translate(const glm::vec3 &direction);
     void IncrementYaw(float increment);
     void IncrementPitch(float increment);
+    Camera * SetLowerYawClamp(float lowerYaw) {m_LowerYawClamp = lowerYaw; return this;}
+    Camera * SetUpperYawClamp(float upperYaw) {m_UpperYawClamp = upperYaw; return this;}
+    Camera * SetLowerPitchClamp(float lowerPitch) {m_LowerPitchClamp = lowerPitch; return this;}
+    Camera * SetUpperPitchClamp(float upperPitch) {m_UpperPitchClamp = upperPitch; return this;}
+    void CameraLookAt(const glm::vec3  &direction) {m_CameraFront = direction;}
     
 };
 #endif // !CAMERA

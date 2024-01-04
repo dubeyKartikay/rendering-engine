@@ -3,9 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <functional>
 #include <string>
-struct CursorMovementOffset {
-  double x, y;
-};
+typedef std::pair<double,double> CursorMovementOffset  ;
 class Input {
 private:
   Input() = delete;
