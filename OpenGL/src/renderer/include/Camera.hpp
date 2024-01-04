@@ -18,7 +18,9 @@ class Camera{
   public:
     Camera();
     void FitViewMatrix();
-    void FitNSetViewMatrix(Shader & shader);
+    void SetViewMatrix(Shader & shader,const std::string & viewMatrixUniformName = "u_View");
+    glm::mat4 & GetViewMatrix() {return m_ViewMatrix;}
+    void FitNSetViewMatrix(Shader & shader,const std::string & viewMatrixUniformName = "u_View");
     void Translate(const glm::vec3 &direction);
     void IncrementYaw(float increment);
     void IncrementPitch(float increment);
