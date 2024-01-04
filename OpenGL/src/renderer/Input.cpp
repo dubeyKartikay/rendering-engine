@@ -25,9 +25,12 @@ bool Input::GetKeyPressed(char c, const std::string &state){
   }
 }
 
-const CursorPosition & Input::GetMousePosition() {
-  glfwGetCursorPos(window, &cursorPosition.x, &cursorPosition.y);
-  return cursorPosition;
+const CursorMovementOffset & Input::GetMouseMovementOffset() {
+  double xPos,yPos;
+  glfwGetCursorPos(window, &xPos, &yPos);
+  cursorMovementOffset.x = xPos - cursorMovementOffset.x;
+  cursorMovementOffset.y = yPos - cursorMovementOffset.y;
+  return  cursorMovementOffset ;
 }
 void Input::SetScrollCallback(const std::function<void(double,double)> & scrollCallback){
     CurrentScrollCallback = scrollCallback;
