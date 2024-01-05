@@ -74,7 +74,6 @@ int main(void) {
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   std::cout << glGetString(GL_VERSION) << std::endl;
   
-  
   Input::Initialize(window);
 
 
@@ -87,6 +86,13 @@ int main(void) {
   float deltaTime= 0.0f;
   float lastFrame = 0.0f;
   while (!glfwWindowShouldClose(window)) {
+    
+    if(Input::GetKeyPressed('`') && Input::GetKeyPressed('$')){
+      glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
+    } else if (Input::GetKeyPressed('`')) {
+      glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    } 
+      
 
     float currFrame = glfwGetTime();
     deltaTime = currFrame- lastFrame;

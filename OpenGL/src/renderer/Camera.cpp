@@ -1,13 +1,14 @@
 #include <Camera.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/ext/quaternion_geometric.hpp>
+#include <limits>
 
 Camera::Camera()
     : m_CameraPos(0.0f), m_CameraFront(0.0f, 0.0f, -1.0f),
       m_CameraUp(0.0f, 1.0f, 0.0f),
       m_CameraRight(glm::normalize(glm::cross(m_CameraFront, m_CameraUp))),
-      m_ViewMatrix(1.0f), m_Yaw(90.0f), m_Pitch(0.0f), m_LowerYawClamp(0.0f),
-      m_UpperYawClamp(180.0f), m_LowerPitchClamp(-90.0f),
+      m_ViewMatrix(1.0f), m_Yaw(90.0f), m_Pitch(0.0f), m_LowerYawClamp(-std::numeric_limits<float>::infinity()),
+      m_UpperYawClamp(std::numeric_limits<float>::infinity()), m_LowerPitchClamp(-90.0f),
       m_UpperPitchClamp(90.0f) {}
 
 void Camera::IncrementYaw(float increment){
@@ -26,6 +27,7 @@ void Camera::Translate(const glm::vec3 & direction){
 }
 
 void Camera::FitViewMatrix(){
+  m_CameraRight = glm::normalize(glm::cross(m_CameraFront, m_CameraUp));
   m_ViewMatrix = glm::lookAt(m_CameraPos, m_CameraPos + m_CameraFront, m_CameraUp); 
 }
 

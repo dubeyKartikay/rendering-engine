@@ -1,8 +1,9 @@
 #include <GLFW/glfw3.h>
 #include <Input.hpp>
+#include <iostream>
 #include <stdexcept>
 GLFWwindow  *Input::window = nullptr;
-CursorMovementOffset Input::cursorMovementOffset;
+std::pair<double,double> Input::lastCursorPos;
 std::function<void(double,double)> Input::CurrentScrollCallback;
 bool Input::GetKeyPressed(char c, const std::string &state){
   unsigned int TRUE_STATE = 0;
@@ -22,6 +23,10 @@ bool Input::GetKeyPressed(char c, const std::string &state){
     return glfwGetKey(window, GLFW_KEY_S) == TRUE_STATE;
   case 'd':
     return glfwGetKey(window, GLFW_KEY_D) == TRUE_STATE;
+  case '`':
+    return glfwGetKey(window, GLFW_KEY_GRAVE_ACCENT) == TRUE_STATE;
+  case '$':
+    return glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == TRUE_STATE;
   default:
     throw std::logic_error(
         "Input Polling on specified key not supported yet: " +
@@ -29,14 +34,15 @@ bool Input::GetKeyPressed(char c, const std::string &state){
   }
 }
 
-const CursorMovementOffset & Input::GetMouseMovementOffset() {
+const CursorMovementOffset  Input::GetMouseMovementOffset() {
   double xPos,yPos;
   glfwGetCursorPos(window, &xPos, &yPos);
-  cursorMovementOffset.first = xPos - cursorMovementOffset.first;
-  cursorMovementOffset.second = yPos - cursorMovementOffset.second;
-  return cursorMovementOffset ;
+  CursorMovementOffset offset = {xPos - lastCursorPos.first, yPos - lastCursorPos.second};
+  lastCursorPos.first = xPos;
+  lastCursorPos.second = yPos;
+  return offset;
 }
 void Input::SetScrollCallback(const std::function<void(double,double)> & scrollCallback){
     CurrentScrollCallback = scrollCallback;
     glfwSetScrollCallback(window,GLFWScrollCallBackWrapper);
-  }
+}

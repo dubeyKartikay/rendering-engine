@@ -8,7 +8,7 @@ class Input {
 private:
   Input() = delete;
   static GLFWwindow *window;
-  static CursorMovementOffset cursorMovementOffset;
+  static std::pair<double,double> lastCursorPos;
   static std::function<void(double,double)> CurrentScrollCallback;
   static void GLFWScrollCallBackWrapper(GLFWwindow * window  , double xPos, double ypos){ CurrentScrollCallback(xPos,ypos); }
 public:
@@ -16,7 +16,7 @@ public:
   Input &operator=(const Input &) = delete;
   static void Initialize(GLFWwindow *window) { Input::window = window; }
   static bool GetKeyPressed(char c, const std::string &state = "pressed");
-  static const CursorMovementOffset &GetMouseMovementOffset() ;
+  static const CursorMovementOffset GetMouseMovementOffset() ;
   static void SetScrollCallback(const std::function<void(double,double)> & scrollCallback);
 };
 #endif // DEBUG

@@ -21,6 +21,8 @@ private:
   float m_RotationAngle;
   glm::vec3 m_Translate;
   char m_texturePath[1024];
+  float m_CameraSensitivity;
+  float m_CameraWalkSpeed;
 public:
   TestCamera3D();
   void Update(float deltaTime) override;

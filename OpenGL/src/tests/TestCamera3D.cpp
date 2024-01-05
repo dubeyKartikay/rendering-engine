@@ -8,7 +8,7 @@
 #include <iostream>
 TestCamera3D::TestCamera3D()
     : m_Model(1.0f), m_Projection(1.0f), m_Translate(0.0f, 0.0f, -3.0f),
-      m_CubeRoationAxis(1.0f), m_RotationAngle(0.0f) {
+      m_CubeRoationAxis(1.0f), m_RotationAngle(0.0f), m_CameraSensitivity(1.0f), m_CameraWalkSpeed(1.0f) {
   m_Shader = new Shader(SHADER_DIR "TestCube3D.shader");
   float positions[] = {
       // positions          // texture coords
@@ -49,14 +49,24 @@ void TestCamera3D::Update(float deltaTime){
   m_Model = glm::rotate(m_Model, glm::radians(50.0f) * 2 *deltaTime,
                         glm::vec3(0.5f, 1.0f, 0.0f));
   if(Input::GetKeyPressed('w')){
-    camera.Translate({0,0,-1.0f*deltaTime});
+    camera.Translate({0,0,-1.0f*deltaTime * m_CameraWalkSpeed});
   }else if ( Input::GetKeyPressed('s') ){
-    camera.Translate({0,0,1.0f*deltaTime});
+    camera.Translate({0,0,1.0f*deltaTime * m_CameraWalkSpeed});
   }else if (Input::GetKeyPressed('a')) {
-    camera.Translate({-1.0*deltaTime,0,0});
+    camera.Translate({-1.0*deltaTime * m_CameraWalkSpeed,0,0});
   }else if (Input::GetKeyPressed('d')) {
-    camera.Translate({1.0f*deltaTime,0,0});
+    camera.Translate({1.0f*deltaTime * m_CameraWalkSpeed,0,0});
   }
+  CursorMovementOffset mouseMovement =  Input::GetMouseMovementOffset();
+  camera.IncrementYaw(-1 * mouseMovement.first*deltaTime*m_CameraSensitivity);
+  camera.IncrementPitch(-1 * mouseMovement.second*deltaTime * m_CameraSensitivity);
+  glm::vec3 lookDir;
+  lookDir.x = glm::cos(glm::radians(camera.GetYaw()))*glm::cos(glm::radians(camera.GetPitch()));
+  lookDir.y = glm::sin(glm::radians(camera.GetPitch()));
+  lookDir.z = -1 *glm::sin(glm::radians(camera.GetYaw()))*glm::cos(glm::radians(camera.GetPitch()));
+  camera.CameraLookAt(glm::normalize(lookDir));
+  // std::cout << lookDir.x <<  " " << lookDir.y << " " << lookDir.z << std::endl; 
+  // std::cout << camera.GetYaw() << " " << camera.GetPitch() << std::endl;
 }
 
 void TestCamera3D::Render(){
@@ -79,6 +89,8 @@ TestCamera3D::~TestCamera3D(){
 
 void TestCamera3D::ImGuiRender() {
   ImGui::Text("%s", GetName());
+  ImGui::SliderFloat("sensitivity", &m_CameraSensitivity, 0.0f, 10.0f);
+  ImGui::SliderFloat("Walk Speed", &m_CameraWalkSpeed, 0.0f, 10.0f);
 }
 
 
