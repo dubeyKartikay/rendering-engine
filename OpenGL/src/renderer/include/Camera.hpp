@@ -1,7 +1,7 @@
-#include "Shaders.hpp"
-#include <glm/glm.hpp>
 #ifndef CAMERA
 #define CAMERA
+#include "Shaders.hpp"
+#include <glm/glm.hpp>
 class Camera{
   private:
     glm::vec3 m_CameraPos;
@@ -19,8 +19,8 @@ class Camera{
     Camera();
     void FitViewMatrix();
     void SetViewMatrix(Shader & shader,const std::string & viewMatrixUniformName = "u_View");
-    glm::mat4 & GetViewMatrix() {return m_ViewMatrix;}
-    void FitNSetViewMatrix(Shader & shader,const std::string & viewMatrixUniformName = "u_View");
+    void FitNSetViewMatrix(Shader & shader,const std::string & viewMatrixUniformName="u_View");
+    const glm::mat4 & GetViewMatrix() {return m_ViewMatrix;}
     void Translate(const glm::vec3 &direction);
     void IncrementYaw(float increment);
     void IncrementPitch(float increment);
@@ -29,6 +29,7 @@ class Camera{
     Camera * SetLowerPitchClamp(float lowerPitch) {m_LowerPitchClamp = lowerPitch; return this;}
     Camera * SetUpperPitchClamp(float upperPitch) {m_UpperPitchClamp = upperPitch; return this;}
     void CameraLookAt(const glm::vec3  &direction) {m_CameraFront = direction;}
-    
+    const float & GetYaw() {return m_Yaw;}
+    const float & GetPitch() {return m_Pitch;}
 };
 #endif // !CAMERA

@@ -2,6 +2,7 @@
 #include <fstream>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include<GL/glew.h>
 Shader::Shader(const std::filesystem::path &path) {
   m_ShaderSource = readShaderFromFile(path);
   m_RendererID = CreateShaders(m_ShaderSource);

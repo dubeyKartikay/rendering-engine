@@ -14,7 +14,6 @@
 #include <glm/fwd.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <iostream>
 
 TestCube3D::TestCube3D() : m_Model(1.0f), m_View(1.0f), m_Projection(1.0f), m_Translate(0.0f),m_RotationAxis(1.0f) {
   m_Shader = new Shader(SHADER_DIR "TestCube3D.shader");
@@ -94,8 +93,8 @@ void TestCube3D::ImGuiRender() {
   // ImGui::SliderFloat3("Rotation Axis", glm::value_ptr(m_RotationAxis), -1.0f,
   //                     1.0f);
   // ImGui::SliderFloat("Rotation Angle", &m_RotationAngle, -180.0f, 180.0f);
-  ImGui::SliderFloat3("translate", glm::value_ptr(m_Translate), -100.0f,
-                      100.0f);
+  ImGui::SliderFloat3("translate", glm::value_ptr(m_Translate), -10.0f,
+                      10.0f);
 }
 
 TestCube3D::~TestCube3D() {

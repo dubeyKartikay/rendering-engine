@@ -3,7 +3,6 @@
 #include <filesystem>
 #include <string>
 #include <unordered_map>
-#include <GL/glew.h>
 #include <glm/glm.hpp>
 #ifndef SHADER_ERROR_MESG_BUFF_SIZE
 #define SHADER_ERROR_MESG_BUFF_SIZE 2048

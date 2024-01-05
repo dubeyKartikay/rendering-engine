@@ -1,5 +1,9 @@
+#include <GLFW/glfw3.h>
 #include <Input.hpp>
 #include <stdexcept>
+GLFWwindow  *Input::window = nullptr;
+CursorMovementOffset Input::cursorMovementOffset;
+std::function<void(double,double)> Input::CurrentScrollCallback;
 bool Input::GetKeyPressed(char c, const std::string &state){
   unsigned int TRUE_STATE = 0;
   if (state == "pressed")

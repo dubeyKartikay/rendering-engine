@@ -14,7 +14,7 @@ private:
 public:
   Input(const Input &obj) = delete;
   Input &operator=(const Input &) = delete;
-  static void Initialize(GLFWwindow *window) { window = window; }
+  static void Initialize(GLFWwindow *window) { Input::window = window; }
   static bool GetKeyPressed(char c, const std::string &state = "pressed");
   static const CursorMovementOffset &GetMouseMovementOffset() ;
   static void SetScrollCallback(const std::function<void(double,double)> & scrollCallback);

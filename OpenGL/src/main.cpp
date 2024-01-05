@@ -1,6 +1,6 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 #include <GLUtils.hpp>
+#include <GLFW/glfw3.h>
+#include "Input.hpp"
 #include <IndexBuffer.hpp>
 #include <Renderer.hpp>
 #include <Shaders.hpp>
@@ -75,11 +75,14 @@ int main(void) {
   std::cout << glGetString(GL_VERSION) << std::endl;
   
   
+  Input::Initialize(window);
+
+
   TestFrame tests;
   tests.AddTest(new TestCube3D());
   tests.AddTest(new TestRect2D());
   tests.AddTest(new TestTexture2D());
-
+  tests.AddTest(new TestCamera3D());
 
   float deltaTime= 0.0f;
   float lastFrame = 0.0f;
