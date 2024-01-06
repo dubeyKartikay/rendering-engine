@@ -23,6 +23,7 @@ private:
   char m_texturePath[1024];
   float m_CameraSensitivity;
   float m_CameraWalkSpeed;
+  float m_Fov;
 public:
   TestCamera3D();
   void Update(float deltaTime) override;
