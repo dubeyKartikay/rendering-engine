@@ -34,7 +34,7 @@ TestCamera3D::TestCamera3D()
   layout.Push<float>(2);
   m_vertArray->AddBuffer(*m_vertBuffer, layout);
   strcpy(m_texturePath, SHADER_DIR "background.png");
-  m_Texture = new Texture(m_texturePath);
+  m_Texture = new Texture2D(m_texturePath);
   Renderer::GetRenderer()->EnableDepthTesting();
   m_Projection =
       glm::perspective(glm::radians(m_Fov), 800.0f / 600.0f, 0.1f, 100.0f);

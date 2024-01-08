@@ -30,7 +30,7 @@ unsigned int index[] = {
  layout.Push<float>(2);
  m_vertArray->AddBuffer(*m_vertBuffer, layout);
  strcpy(m_texturePath, SHADER_DIR "background.png");
- m_Texture = new Texture(m_texturePath);
+ m_Texture = new Texture2D(m_texturePath);
 }
 void TestTexture2D::Render(){
   m_Shader->Bind();

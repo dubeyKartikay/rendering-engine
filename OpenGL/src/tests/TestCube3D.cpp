@@ -41,7 +41,7 @@ TestCube3D::TestCube3D() : m_Model(1.0f), m_View(1.0f), m_Projection(1.0f), m_Tr
   layout.Push<float>(2);
   m_vertArray->AddBuffer(*m_vertBuffer, layout);
   strcpy(m_texturePath, SHADER_DIR "background.png");
-  m_Texture = new Texture(m_texturePath);
+  m_Texture = new Texture2D(m_texturePath);
   Renderer::GetRenderer()->EnableDepthTesting();
   m_RotationAngle = 0.0f;
   m_Translate = glm::vec3(0.0f,0.0f,-3.0f);

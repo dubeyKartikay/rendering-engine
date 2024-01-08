@@ -12,7 +12,7 @@ private:
   VertexBuffer *m_vertBuffer;
   Shader *m_Shader;
   IndexBuffer *m_indexBuffer;
-  Texture* m_Texture;
+  Texture2D* m_Texture;
   glm::mat4 m_View;
   glm::mat4 m_Projection;
   glm::mat4 m_Model;

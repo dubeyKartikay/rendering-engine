@@ -2,7 +2,7 @@
 #include <Texture.hpp>
 #include <filesystem>
 #include <stb/stb_image.h>
-Texture::Texture(const std::filesystem::path &path)
+Texture2D::Texture2D(const std::filesystem::path &path)
     : m_RendererId(0), m_LocalBuffer(0), m_Width(0), m_Height(0),
       m_BPP(0) {
   glGenTextures(1, &m_RendererId);
@@ -19,9 +19,9 @@ Texture::Texture(const std::filesystem::path &path)
   if (m_LocalBuffer)
     stbi_image_free(m_LocalBuffer);
 }
-Texture::~Texture() { glDeleteTextures(1, &m_RendererId); }
-void Texture::Bind(unsigned int slot) const {
+Texture2D::~Texture2D() { glDeleteTextures(1, &m_RendererId); }
+void Texture2D::Bind(unsigned int slot) const {
   glActiveTexture(GL_TEXTURE0 + slot);
   glBindTexture(GL_TEXTURE_2D, m_RendererId);
 }
-void Texture::Unbind() const { glBindTexture(GL_TEXTURE_2D, 0); }
+void Texture2D::Unbind() const { glBindTexture(GL_TEXTURE_2D, 0); }

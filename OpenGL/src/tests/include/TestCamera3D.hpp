@@ -17,7 +17,7 @@ private:
   VertexBuffer *m_vertBuffer;
   Shader *m_Shader;
   IndexBuffer *m_indexBuffer;
-  Texture* m_Texture;
+  Texture2D* m_Texture;
   float m_RotationAngle;
   glm::vec3 m_Translate;
   char m_texturePath[1024];
