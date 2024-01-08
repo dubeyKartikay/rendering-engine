@@ -10,7 +10,7 @@
 #include <TestRect2D.hpp>
 #include <TestTexture2D.hpp>
 #include <TestTexture3D.hpp>
-#include <Texture.hpp>
+#include <Texture2D.hpp>
 #include <VertexArray.hpp>
 #include <VertexBuffer.hpp>
 #include <glm/ext/matrix_clip_space.hpp>

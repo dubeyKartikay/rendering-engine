@@ -1,5 +1,5 @@
 #include <GL/gl.h>
-#include <Texture.hpp>
+#include <Texture2D.hpp>
 #include <filesystem>
 #include <stb/stb_image.h>
 Texture2D::Texture2D(const std::filesystem::path &path)

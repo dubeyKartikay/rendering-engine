@@ -1,7 +1,7 @@
 #ifndef TESTCAMERA3D
 #define TESTCAMERA3D
 #include "IndexBuffer.hpp"
-#include "Texture.hpp"
+#include "Texture2D.hpp"
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
 #include <Test.hpp>

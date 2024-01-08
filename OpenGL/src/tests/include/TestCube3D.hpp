@@ -2,7 +2,7 @@
 #define TESTCUBE3D
 #include "IndexBuffer.hpp"
 #include "Shaders.hpp"
-#include "Texture.hpp"
+#include "Texture2D.hpp"
 #include "VertexArray.hpp"
 #include <Test.hpp>
 #include <glm/fwd.hpp>

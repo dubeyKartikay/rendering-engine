@@ -2,7 +2,7 @@
 #include "Renderer.hpp"
 #include "Shaders.hpp"
 #include "TestCube3D.hpp"
-#include "Texture.hpp"
+#include "Texture2D.hpp"
 #include "VertexArray.hpp"
 #include "vendor/imgui/imgui.h"
 #include <GLFW/glfw3.h>

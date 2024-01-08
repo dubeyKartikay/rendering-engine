@@ -2,7 +2,7 @@
 #include "IndexBuffer.hpp"
 #include "Renderer.hpp"
 #include "Shaders.hpp"
-#include "Texture.hpp"
+#include "Texture2D.hpp"
 #include "VertexArray.hpp"
 #include "vendor/imgui/imgui.h"
 #include <VertexBufferLayout.hpp>

@@ -1,5 +1,8 @@
+#ifndef MESH
+#define MESH
 #include "IndexBuffer.hpp"
 #include "Shaders.hpp"
+#include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
 #include <string>
 #include <vector>
@@ -16,15 +19,15 @@ struct Texture2D {
 class Mesh {
 public:
   // mesh data
+  Mesh(const std::vector<Vertex> &vertices,const std::vector<unsigned int> &indices,const std::vector<Texture2D>& textures);
+  void Draw(Shader &shader);
+private:
   std::vector<Vertex> m_Vertices;
   std::vector<unsigned int> m_Indices;
   std::vector<Texture2D> m_Textures;
   VertexBuffer m_VertexBuffer;
+  VertexArray VertexArray;
   IndexBuffer m_IndexBuffer;
-  Mesh(const std::vector<Vertex> &vertices,const std::vector<unsigned int> &indices,const std::vector<Texture2D>& textures);
-  void Draw(Shader &shader);
-private:
-  // render data
-  unsigned int VAO, VBO, EBO;
-  void setupMesh();
+  void Init();
 };
+#endif // !MESH
