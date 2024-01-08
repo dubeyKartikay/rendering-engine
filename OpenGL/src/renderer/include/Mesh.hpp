@@ -2,6 +2,7 @@
 #define MESH
 #include "IndexBuffer.hpp"
 #include "Shaders.hpp"
+#include "Texture2D.hpp"
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
 #include <string>
@@ -10,24 +11,23 @@
 struct Vertex{
   glm::vec3 Position;
   glm::vec3 Normal;
-  std::vector<glm::vec2> TextureCoordinates;
+  glm::vec2 TextureCoordinates;
 };
-struct Texture2D {
-  unsigned int id;
+struct MeshTexture {
+  Texture2D texture;
   std::string type;
 };
 class Mesh {
 public:
   // mesh data
-  Mesh(const std::vector<Vertex> &vertices,const std::vector<unsigned int> &indices,const std::vector<Texture2D>& textures);
+  Mesh(const std::vector<Vertex> &vertices,const std::vector<unsigned int> &indices,const std::vector<MeshTexture>& textures);
   void Draw(Shader &shader);
 private:
   std::vector<Vertex> m_Vertices;
   std::vector<unsigned int> m_Indices;
-  std::vector<Texture2D> m_Textures;
+  std::vector<MeshTexture> m_Textures;
   VertexBuffer m_VertexBuffer;
-  VertexArray VertexArray;
+  VertexArray m_VertexArray;
   IndexBuffer m_IndexBuffer;
-  void Init();
 };
 #endif // !MESH
