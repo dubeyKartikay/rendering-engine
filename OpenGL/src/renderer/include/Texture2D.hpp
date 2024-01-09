@@ -1,6 +1,7 @@
 #ifndef TEXTURE
 #define TEXTURE
 #include <filesystem>
+#include <string>
 class Texture2D{
   private:
   unsigned int m_RendererId;
@@ -15,6 +16,7 @@ class Texture2D{
 
   inline int GetWidth();
   inline int GetHeight();
+  std::string GetFilePath() const;
 };
 
 #endif // !TEXTURE

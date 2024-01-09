@@ -4,7 +4,7 @@
 #include <stb/stb_image.h>
 Texture2D::Texture2D(const std::filesystem::path &path)
     : m_RendererId(0), m_LocalBuffer(0), m_Width(0), m_Height(0),
-      m_BPP(0) {
+      m_BPP(0),m_Filepath(path) {
   glGenTextures(1, &m_RendererId);
   glBindTexture(GL_TEXTURE_2D, m_RendererId);
   stbi_set_flip_vertically_on_load(1);
@@ -25,3 +25,7 @@ void Texture2D::Bind(unsigned int slot) const {
   glBindTexture(GL_TEXTURE_2D, m_RendererId);
 }
 void Texture2D::Unbind() const { glBindTexture(GL_TEXTURE_2D, 0); }
+
+std::string Texture2D::GetFilePath() const {
+  return this->m_Filepath;
+}
