@@ -23,8 +23,6 @@ public:
   Mesh(const std::vector<Vertex> &vertices,const std::vector<unsigned int> &indices,const std::vector<MeshTexture>& textures);
   void Draw(Shader &shader);
 private:
-  std::vector<Vertex> m_Vertices;
-  std::vector<unsigned int> m_Indices;
   std::vector<MeshTexture> m_Textures;
   VertexBuffer m_VertexBuffer;
   VertexArray m_VertexArray;

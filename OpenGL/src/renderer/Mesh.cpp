@@ -6,8 +6,6 @@ Mesh::Mesh(const std::vector<Vertex> &vertices,
            const std::vector<MeshTexture> &textures)
     : m_VertexBuffer(vertices.data(), vertices.size() * sizeof(Vertex)),
       m_IndexBuffer(indices.data(), indices.size()) {
-  m_Vertices = vertices;
-  m_Indices = indices;
   m_Textures = textures;
   VertexBufferLayout vblayout;
   vblayout.Push<float>(3);
