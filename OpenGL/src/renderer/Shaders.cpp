@@ -1,13 +1,16 @@
+#include <GL/glew.h>
 #include <Shaders.hpp>
 #include <fstream>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-#include<GL/glew.h>
 Shader::Shader(const std::filesystem::path &path) {
   m_ShaderSource = readShaderFromFile(path);
   m_RendererID = CreateShaders(m_ShaderSource);
 }
-Shader::~Shader() { glDeleteProgram(m_RendererID); }
+Shader::~Shader() {
+  std::cout << "Shader Destroyed" << std::endl;
+  glDeleteProgram(m_RendererID);
+}
 void Shader::Bind() const { glUseProgram(m_RendererID); }
 void Shader::Unbind() const { glUseProgram(0); }
 void Shader::setUniform4f(const std::string &name, float v0, float v1, float v2,
@@ -15,11 +18,12 @@ void Shader::setUniform4f(const std::string &name, float v0, float v1, float v2,
   glUniform4f(GetUniformLocation(name), v0, v1, v2, v3);
 }
 
-void Shader::setUniform1i(const std::string &name,int value){
-  glUniform1i(GetUniformLocation(name),value);
+void Shader::setUniform1i(const std::string &name, int value) {
+  glUniform1i(GetUniformLocation(name), value);
 }
-void Shader::setUniformMat4f(const std::string &name,const glm::mat4& mat){
-  glUniformMatrix4fv(GetUniformLocation(name),1,GL_FALSE,glm::value_ptr(mat));
+void Shader::setUniformMat4f(const std::string &name, const glm::mat4 &mat) {
+  glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE,
+                     glm::value_ptr(mat));
 }
 
 int Shader::GetUniformLocation(const std::string &name) {
@@ -36,6 +40,7 @@ ShaderSource Shader::readShaderFromFile(std::filesystem::path path) {
     std::cout << "Shaders not defined" << std::endl;
     exit(EXIT_FAILURE);
   }
+  std::cout << "Reading Shader file: " << path << std::endl;
   enum ShaderType {
     NONE = -1,
     VERTEX_SHADER,
@@ -99,5 +104,3 @@ unsigned int Shader::CreateShaders(ShaderSource &shader_source) {
 
   return program;
 }
-
-

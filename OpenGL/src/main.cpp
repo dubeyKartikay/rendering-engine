@@ -1,6 +1,7 @@
 #include <GLUtils.hpp>
 #include <GLFW/glfw3.h>
 #include "Input.hpp"
+#include "TestModel3D.hpp"
 #include <IndexBuffer.hpp>
 #include <Renderer.hpp>
 #include <Shaders.hpp>
@@ -82,11 +83,12 @@ int main(void) {
   tests.AddTest(new TestRect2D());
   tests.AddTest(new TestTexture2D());
   tests.AddTest(new TestCamera3D());
+  tests.AddTest(new TestModel3D());
 
   float deltaTime= 0.0f;
   float lastFrame = 0.0f;
   while (!glfwWindowShouldClose(window)) {
-    
+    glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
     if(Input::GetKeyPressed('`') && Input::GetKeyPressed('$')){
       glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
     } else if (Input::GetKeyPressed('`')) {

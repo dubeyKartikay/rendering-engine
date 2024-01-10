@@ -34,13 +34,13 @@ void Model::ProcessNode(aiNode *node, const aiScene *scene) {
     ProcessNode(node->mChildren[i], scene);
   }
 }
-glm::vec2 aiVectorToGlm(const aiVector2D &aivec2d) {
-  return glm::vec2(aivec2d.x, aivec2d.y);
+glm::vec2 aiVectorToGlm2D(const aiVector3D &aivec3d) {
+  return glm::vec2(aivec3d.x, aivec3d.y);
 }
 glm::vec3 aiVectorToGlm(const aiVector3D &aivec3d) {
   return glm::vec3(aivec3d.x, aivec3d.y, aivec3d.z);
 }
-Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene) {
+Mesh *Model::ProcessMesh(aiMesh *mesh, const aiScene *scene) {
   std::vector<Vertex> meshVertices;
   std::vector<unsigned int> meshIndcies;
   std::vector<MeshTexture> meshMaterial;
@@ -49,25 +49,24 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene) {
     vertex.Position = aiVectorToGlm(mesh->mVertices[i]);
     vertex.Normal = mesh->HasNormals() ? aiVectorToGlm(mesh->mNormals[i])
                                        : glm::vec3(0.0f, 0.0f, 0.0f);
-    vertex.TextureCoordinates = mesh->HasTextureCoords(0)
-                                    ? aiVectorToGlm(mesh->mTextureCoords[0][i])
-                                    : glm::vec2(0.0f, 0.0f);
+    vertex.TextureCoordinates =
+        mesh->mTextureCoords[0] ? aiVectorToGlm2D(mesh->mTextureCoords[0][i])
+                                : glm::vec2(0.0f, 0.0f);
     meshVertices.push_back(vertex);
+  }
 
-    for (size_t i = 0; i < mesh->mNumFaces; i++) {
-      for (size_t j = 0; j < mesh->mFaces[i].mNumIndices; j++) {
-        meshIndcies.push_back(mesh->mFaces[i].mIndices[j]);
-      }
-    }
-
-    if (mesh->mMaterialIndex >= 0) {
-      aiMaterial *mat = scene->mMaterials[mesh->mMaterialIndex];
-      LoadTextures(meshMaterial, mat, aiTextureType_DIFFUSE, "texture_diffuse");
-      LoadTextures(meshMaterial, mat, aiTextureType_SPECULAR,
-                   "texture_specular");
+  for (size_t i = 0; i < mesh->mNumFaces; i++) {
+    for (size_t j = 0; j < mesh->mFaces[i].mNumIndices; j++) {
+      meshIndcies.push_back(mesh->mFaces[i].mIndices[j]);
     }
   }
-  return Mesh(meshVertices, meshIndcies, meshMaterial);
+
+  if (mesh->mMaterialIndex >= 0) {
+    aiMaterial *mat = scene->mMaterials[mesh->mMaterialIndex];
+    LoadTextures(meshMaterial, mat, aiTextureType_DIFFUSE, "texture_diffuse");
+    LoadTextures(meshMaterial, mat, aiTextureType_SPECULAR, "texture_specular");
+  }
+  return new Mesh(meshVertices, meshIndcies, meshMaterial);
 }
 void Model::LoadTextures(std::vector<MeshTexture> &textureArray,
                          aiMaterial *mat, aiTextureType type,
@@ -78,7 +77,24 @@ void Model::LoadTextures(std::vector<MeshTexture> &textureArray,
     mat->GetTexture(type, i, &str);
     if (m_LoadedTextures.find(str.C_Str()) != m_LoadedTextures.end())
       continue;
-    textureArray.push_back({Texture2D(str.C_Str()), typeName});
+    std::filesystem::path textureDirectory;
+    textureDirectory.append(m_ModelDirectory.c_str()).append(str.C_Str());
+    std::cout << textureDirectory << std::endl;
+    textureArray.push_back({new Texture2D(textureDirectory), typeName});
     m_LoadedTextures.insert(str.C_Str());
   }
+}
+
+void Model::Draw(Shader &shader) const {
+  for (Mesh *mesh : m_Meshes) {
+    mesh->Draw(shader);
+  }
+}
+
+Model::~Model() {
+  std::cout << "Model Destructor" << std::endl;
+  for (auto p : m_Meshes) {
+    delete p;
+  }
+  m_Meshes.clear();
 }

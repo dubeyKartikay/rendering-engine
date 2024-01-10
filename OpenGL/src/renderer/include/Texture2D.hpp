@@ -16,6 +16,8 @@ class Texture2D{
 
   inline int GetWidth();
   inline int GetHeight();
+
+  void SetActive(unsigned int slot = 0) const;
   std::string GetFilePath() const;
 };
 
