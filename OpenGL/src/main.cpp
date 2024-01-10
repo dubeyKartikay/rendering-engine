@@ -1,7 +1,7 @@
 #include <GLUtils.hpp>
-#include <GLFW/glfw3.h>
 #include "Input.hpp"
 #include "TestModel3D.hpp"
+#include <GLFW/glfw3.h>
 #include <IndexBuffer.hpp>
 #include <Renderer.hpp>
 #include <Shaders.hpp>
@@ -34,7 +34,7 @@ int main(void) {
   /* Initialize the library */
   if (!glfwInit())
     return -1;
-  
+
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -52,7 +52,6 @@ int main(void) {
   }
   glfwMakeContextCurrent(window);
   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-  glfwSwapInterval(2);
   if (glewInit() != GLEW_OK) {
     std::cout << "GLEW INIT ERROR" << std::endl;
     exit(EXIT_FAILURE);
@@ -74,9 +73,8 @@ int main(void) {
   glDebugMessageCallback(GLDebugMessageCallback, NULL);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   std::cout << glGetString(GL_VERSION) << std::endl;
-  
-  Input::Initialize(window);
 
+  Input::Initialize(window);
 
   TestFrame tests;
   tests.AddTest(new TestCube3D());
@@ -85,30 +83,30 @@ int main(void) {
   tests.AddTest(new TestCamera3D());
   tests.AddTest(new TestModel3D());
 
-  float deltaTime= 0.0f;
+  float deltaTime = 0.0f;
   float lastFrame = 0.0f;
   while (!glfwWindowShouldClose(window)) {
     glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
-    if(Input::GetKeyPressed('`') && Input::GetKeyPressed('$')){
-      glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
+    if (Input::GetKeyPressed('`') && Input::GetKeyPressed('$')) {
+      glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+      glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
     } else if (Input::GetKeyPressed('`')) {
       glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-    } 
-      
+    }
 
     float currFrame = glfwGetTime();
-    deltaTime = currFrame- lastFrame;
+    deltaTime = currFrame - lastFrame;
     lastFrame = currFrame;
-    
+
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-    
+
     tests.Clear();
     tests.Update(deltaTime);
     tests.Render();
     tests.ImGuiRender();
-    
+
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     glfwSwapBuffers(window);
