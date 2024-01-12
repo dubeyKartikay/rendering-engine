@@ -5,7 +5,6 @@
 #include <cstring>
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
-#include <iostream>
 TestCamera3D::TestCamera3D()
     : m_Model(1.0f), m_Projection(1.0f), m_Translate(0.0f, 0.0f, -3.0f),
       m_CubeRoationAxis(1.0f), m_RotationAngle(0.0f), m_CameraSensitivity(1.0f),
