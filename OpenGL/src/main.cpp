@@ -14,9 +14,9 @@
 #include <Texture2D.hpp>
 #include <VertexArray.hpp>
 #include <VertexBuffer.hpp>
-#include <glm/ext/matrix_clip_space.hpp>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include <vendor/glm/ext/matrix_clip_space.hpp>
+#include <vendor/glm/glm.hpp>
+#include <vendor/glm/gtc/matrix_transform.hpp>
 #include <iostream>
 #include <vendor/imgui/imgui.h>
 #include <vendor/imgui/imgui_impl_glfw.h>

@@ -5,7 +5,7 @@
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
 #include <Test.hpp>
-#include <glm/fwd.hpp>
+#include <vendor/glm/fwd.hpp>
 
 #ifndef SHADER_DIR
 #define SHADER_DIR 0

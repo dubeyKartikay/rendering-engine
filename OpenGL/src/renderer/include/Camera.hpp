@@ -1,7 +1,7 @@
 #ifndef CAMERA
 #define CAMERA
 #include "Shaders.hpp"
-#include <glm/glm.hpp>
+#include <vendor/glm/glm.hpp>
 class Camera{
   private:
     glm::vec3 m_CameraPos;

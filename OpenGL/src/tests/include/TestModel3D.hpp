@@ -2,7 +2,7 @@
 #define TESTMODEL3D
 #include <Test.hpp>
 #include <Model.hpp>
-#include <glm/glm.hpp>
+#include <vendor/glm/glm.hpp>
 #include <Camera.hpp>
 class TestModel3D : public Test {
 private:

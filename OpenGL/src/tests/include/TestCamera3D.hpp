@@ -5,7 +5,7 @@
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
 #include <Test.hpp>
-#include <glm/glm.hpp>
+#include <vendor/glm/glm.hpp>
 #include <Camera.hpp>
 class TestCamera3D : public Test {
 private:

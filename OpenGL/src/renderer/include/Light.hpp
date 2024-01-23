@@ -1,6 +1,6 @@
 #ifndef LIGHT
 #define LIGHT
-#include <glm/glm.hpp>
+#include <vendor/glm/glm.hpp>
 class Light{
   private:
 

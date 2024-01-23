@@ -5,7 +5,7 @@
 #include "Texture2D.hpp"
 #include "VertexArray.hpp"
 #include <Test.hpp>
-#include <glm/fwd.hpp>
+#include <vendor/glm/fwd.hpp>
 class TestCube3D : public Test {
 private:
   VertexArray *m_vertArray;

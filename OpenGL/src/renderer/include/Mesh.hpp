@@ -5,7 +5,7 @@
 #include "Texture2D.hpp"
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
-#include <glm/glm.hpp>
+#include <vendor/glm/glm.hpp>
 #include <string>
 #include <vector>
 struct Vertex {
