@@ -41,7 +41,7 @@ struct DirectionalLight{
 };
 
 struct PointLight{
-  vec3 direction;
+  vec3 position;
   vec3 ambient;
   vec3 diffuse;
   vec3 specular;
@@ -83,4 +83,35 @@ void main(){
     }
 
     color=result;
+}
+
+vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDirection){
+  vec3 lightDirection = normalize(-light.direction);
+  float diff = max(dot(normal,lightDirection),0);
+  float spec = pow(max(dot(normal, normalize(viewDirection + lightDirection)),0),u_Material.shininess)
+  vec4 materialDiffuse = texture(u_Material.diffuse,v_texCord);
+  vec4 materialSpecular = texture(u_Material.specular,v_texCord);
+  vec3 ambient = light.ambient * materialDiffuse;
+  vec3 diffuse = light.diffuse * diff * materialDiffuse;
+  vec3 specular = light.specular * spec *materialSpecular;
+  return (ambient + diffuse + specular);
+}
+
+vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDirection){
+  vec3 lightDirection = normalize(light.position - v_FragmentPosition);
+  float diff = max(dot(normal,lightDirection),0);
+  float spec = pow(max(dot(normal, normalize(viewDirection + lightDirection)),0),u_Material.shininess)
+
+  float distance =  length(light.position - v_FragmentPosition);
+  float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
+
+  vec4 materialDiffuse = texture(u_Material.diffuse,v_texCord);
+  vec4 materialSpecular = texture(u_Material.specular,v_texCord);
+
+  vec3 ambient = light.ambient * materialDiffuse;
+  vec3 diffuse = light.diffuse * diff * materialDiffuse;
+  vec3 specular = light.specular * spec *materialSpecular;
+  return (ambient + diffuse + specular)*attenuation;
+
+
 }
