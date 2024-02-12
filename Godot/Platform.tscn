@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://cstvyekhwmxyy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rpsa7"]
+size = Vector2(582.5, 85)
+
+[node name="Ground" type="Node2D"]
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+gravity_scale = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+shape = SubResource("RectangleShape2D_rpsa7")
+
+[node name="Polygon2D" type="Polygon2D" parent="RigidBody2D"]
+scale = Vector2(1, 1.0893)
+polygon = PackedVector2Array(-288, -36.7207, -288, 36.7207, 288, 36.7207, 288, -36.7207)
