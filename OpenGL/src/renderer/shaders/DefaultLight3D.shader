@@ -61,8 +61,6 @@ uniform vec3 u_CameraPosition;
 uniform Material u_Material;
 uniform DirectionalLight u_DirectionalLights[MAX_DIRECIONAL_LIGHTS];
 uniform PointLight u_PointLights[MAX_POINT_LIGHTS];
-uniform uint u_nDirectionalLights;
-uniform uint u_nPointLights;
 
 vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDirection);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDirection);
@@ -75,10 +73,10 @@ void main(){
     vec3 viewDirection = normalize(u_CameraPosition - v_FragmentPosition);
     vec3 result = vec3(0,0,0);
     
-    for(uint i = 0 ; i < u_nDirectionalLights ; i++ ) {
+    for(uint i = 0 ; i < MAX_DIRECIONAL_LIGHTS ; i++ ) {
       result += CalcDirectionalLight(u_DirectionalLights[i],v_Normal,viewDirection);
     }
-    for(uint i = 0 ; i < u_nPointLights ; i++ ) {
+    for(uint i = 0 ; i < MAX_POINT_LIGHTS ; i++ ) {
       result += CalcPointLight(u_DirectionalLights[i],v_Normal,v_FragmentPosition,viewDirection);
     }
 
