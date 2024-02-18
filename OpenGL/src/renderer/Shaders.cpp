@@ -1,8 +1,10 @@
+#include "Light.hpp"
 #include <GL/glew.h>
 #include <Shaders.hpp>
 #include <fstream>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include <string>
 Shader::Shader(const std::filesystem::path &path) {
   m_ShaderSource = readShaderFromFile(path);
   m_RendererID = CreateShaders(m_ShaderSource);
@@ -18,6 +20,14 @@ void Shader::setUniform4f(const std::string &name, float v0, float v1, float v2,
   glUniform4f(GetUniformLocation(name), v0, v1, v2, v3);
 }
 
+void Shader::setUniformVec3(const std::string &name, const glm::vec3 &vector) {
+  glUniform3f(GetUniformLocation(name), vector.x, vector.y, vector.z);
+}
+
+void Shader::setUniformVec4(const std::string &name, const glm::vec4 &vector) {
+  glUniform4f(GetUniformLocation(name), vector.x, vector.y, vector.z, vector.w);
+}
+
 void Shader::setUniform1i(const std::string &name, int value) {
   glUniform1i(GetUniformLocation(name), value);
 }
@@ -26,6 +36,55 @@ void Shader::setUniformMat4f(const std::string &name, const glm::mat4 &mat) {
                      glm::value_ptr(mat));
 }
 
+void Shader::setUniformDirectionalLight(
+    const std::string &name, const DirectionalLight &directionalLight,
+    bool isArray, int index) {
+  std::string uniformName = name;
+  if (isArray) {
+    uniformName = name + "[" + std::to_string(index) + "]";
+  }
+  setUniformVec3(uniformName + ".direction", directionalLight.direction);
+  setUniformVec3(uniformName + ".ambient", directionalLight.ambient);
+  setUniformVec3(uniformName + ".diffuse", directionalLight.diffuse);
+  setUniformVec3(uniformName + ".specular", directionalLight.specular);
+}
+
+void Shader::setUniformMultipleDirectionalLight(
+    const std::string &name, std::vector<DirectionalLight> &directionalLights) {
+  for (int i = 0; i < directionalLights.size(); i++) {
+    setUniformDirectionalLight(name, directionalLights[i], true, i);
+  }
+}
+
+void Shader::setUniformPointLight(const std::string &name,
+                                  const PointLight &pointLight, bool isArray,
+                                  int index) {
+
+  std::string uniformName = name;
+  if (isArray) {
+    uniformName = name + "[" + std::to_string(index) + "]";
+  }
+  setUniformVec3(uniformName + ".position", pointLight.position);
+  setUniformVec3(uniformName + ".ambient", pointLight.ambient);
+  setUniformVec3(uniformName + ".diffuse", pointLight.diffuse);
+  setUniformVec3(uniformName + ".specular", pointLight.specular);
+  glUniform1f(GetUniformLocation(uniformName + ".constant"),pointLight.constant);
+  glUniform1f(GetUniformLocation(uniformName + ".linear"),pointLight.linear);
+  glUniform1f(GetUniformLocation(uniformName + ".quadratic"),pointLight.quadratic);
+}
+
+
+void Shader::setUniformMaterial(const std::string & name ,const Material & material){
+  glUniform1i(GetUniformLocation(name + ".diffuse"),material.diffuse);
+  glUniform1i(GetUniformLocation(name + ".specular"),material.specular);
+  glUniform1f(GetUniformLocation(name + ".shininess"),material.shininess);
+}
+
+void Shader::setUniformMultiplePointLight(const std::string & name, std::vector<PointLight> & pointLights){
+  for (size_t i = 0; i < pointLights.size(); i++) {
+    setUniformPointLight(name, pointLights[i],true,i);
+  }
+}
 int Shader::GetUniformLocation(const std::string &name) {
   if (auto cache_search = uniform_loc_cache.find(name);
       cache_search != uniform_loc_cache.end()) {

@@ -31,5 +31,6 @@ class Camera{
     void CameraLookAt(const glm::vec3  &direction) {m_CameraFront = direction;}
     const float & GetYaw() {return m_Yaw;}
     const float & GetPitch() {return m_Pitch;}
+    const glm::vec3 & GetPosition(){return m_CameraPos;}
 };
 #endif // !CAMERA

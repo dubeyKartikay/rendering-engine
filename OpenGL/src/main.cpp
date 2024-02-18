@@ -1,5 +1,6 @@
 #include <GLUtils.hpp>
 #include "Input.hpp"
+#include "TestLighting.hpp"
 #include "TestModel3D.hpp"
 #include <GLFW/glfw3.h>
 #include <IndexBuffer.hpp>
@@ -82,6 +83,7 @@ int main(void) {
   tests.AddTest(new TestTexture2D());
   tests.AddTest(new TestCamera3D());
   tests.AddTest(new TestModel3D());
+  tests.AddTest(new TestLighting());
 
   float deltaTime = 0.0f;
   float lastFrame = 0.0f;

@@ -1,6 +1,7 @@
 #ifndef SHADERS
 #define SHADERS
 #include "Light.hpp"
+#include "vendor/glm/fwd.hpp"
 #include <filesystem>
 #include <string>
 #include <unordered_map>
@@ -34,10 +35,13 @@ public:
   void setUniform4f(const std::string &name, float v0,float v1,float v2, float v3);
   void setUniform1i(const std::string &name,int value);
   void setUniformMat4f(const std::string &name,const glm::mat4& mat);
-  void setDirectionalLight(const std::string &name,const DirectionalLight & directionalLight,bool isArray = false,int index = 0);
-  void setPointLight(const PointLight & pointLight,bool isArray = false ,int index = 0);
-  void setMultipleDirectionalLight(const std::string & name,std::vector<DirectionalLight> & directionalLights);
-  void setMultiplePointLight(const std::string & name, std::vector<PointLight> & pointLights);
+  void setUniformVec3(const std::string & name,const  glm::vec3 & vector);
+  void setUniformVec4(const std::string & name,const glm::vec4 & vector);
+  void setUniformDirectionalLight(const std::string &name,const DirectionalLight & directionalLight,bool isArray = false,int index = 0);
+  void setUniformPointLight(const std::string & name, const PointLight & pointLight,bool isArray = false ,int index = 0);
+  void setUniformMultipleDirectionalLight(const std::string & name,std::vector<DirectionalLight> & directionalLights);
+  void setUniformMultiplePointLight(const std::string & name, std::vector<PointLight> & pointLights);
+  void setUniformMaterial(const std::string & name ,const Material & material);
 };
 
 #endif // !SHADERS

@@ -26,5 +26,11 @@ struct PointLight{
   PointLight(const glm::vec3 & position, const glm::vec3 &diffuse, const glm::vec3 &specular, const glm::vec3 &ambient);
   PointLight(const glm::vec3 & position, const glm::vec3 &diffuse, const glm::vec3 &specular, const glm::vec3 &ambient, const float &constant,const float &linear,const float & quadratic);
 };
-
+struct Material{
+  unsigned int diffuse;
+  unsigned int specular;
+  float shininess;
+  Material(unsigned int tex_diffuse,unsigned int tex_spec , float shine) : diffuse(tex_diffuse), specular(tex_spec), shininess(shine){}
+  
+};
 #endif // !LIGHT
