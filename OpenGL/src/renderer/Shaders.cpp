@@ -1,6 +1,7 @@
 #include "Light.hpp"
 #include <GL/glew.h>
 #include <Shaders.hpp>
+#include <algorithm>
 #include <fstream>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
@@ -91,6 +92,11 @@ int Shader::GetUniformLocation(const std::string &name) {
     return cache_search->second;
   }
   int location = glGetUniformLocation(m_RendererID, name.c_str());
+  if(location < 0){
+    std::cout << "Uniform not found" << std::endl;
+  }else{
+    uniform_loc_cache[name] = location;
+  }
   return location;
 }
 

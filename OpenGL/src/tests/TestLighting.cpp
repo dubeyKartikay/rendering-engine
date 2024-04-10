@@ -1,9 +1,9 @@
 #include "Input.hpp"
 #include "glm/fwd.hpp"
 #include "vendor/imgui/imgui.h"
+#include <Light.hpp>
 #include <Renderer.hpp>
 #include <TestLighting.hpp>
-#include <Light.hpp>
 #include <cstring>
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
@@ -13,26 +13,39 @@ TestLighting::TestLighting()
       m_CameraWalkSpeed(1.0f), m_Fov(45.0f) {
   m_Shader = new Shader(SHADER_DIR "DefaultLight3D.shader");
   float positions[] = {
-      // positions          // texture coords
-      0.5f,  0.5f,  0.5f,  1.0f, 1.0f, // top right
-      0.5f,  -0.5f, 0.5f,  1.0f, 0.0f, // bottom right
-      -0.5f, -0.5f, 0.5f,  0.0f, 0.0f, // bottom left
-      -0.5f, 0.5f,  0.5f,  0.0f, 1.0f, // top left
+      // positions        //normals       // texture coords
+      0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0.5f, 1.0f, 1.0f, // top right
+      0.5f,  -0.5f, 0.5f,  1.0f, 0.0f,                   // bottom right
+      -0.5f, -0.5f, 0.5f,  0.0f, 0.0f,                   // bottom left
+      -0.5f, 0.5f,  0.5f,  0.0f, 0.0f, 0.5f, 0.0f, 1.0f,                   // top left
 
-      0.5f,  0.5f,  -0.5f, 0.0f, 1.0f, // top right
+      0.5f,  0.5f,  -0.5f, 0.0f, 0.0f, -0.5f, 0.0f, 1.0f, // top right
       0.5f,  -0.5f, -0.5f, 0.0f, 0.0f, // bottom right
-      -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom left
+      -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -0.5f, 1.0f, 0.0f, // bottom left
       -0.5f, 0.5f,  -0.5f, 1.0f, 1.0f  // top left
   };
-  unsigned int index[] = {0, 1, 2, 2, 3, 0, 4, 5, 6, 6, 7, 4, 0, 4, 1, 4, 5, 1,
-                          1, 5, 6, 1, 2, 6, 0, 4, 7, 0, 3, 7, 7, 3, 6, 3, 6, 2};
+  unsigned int index[] = {0, 1, 2,
+                          2, 3, 0,
+                          4, 5, 6,
+                          7, 6, 4,
+                          1, 4, 0,
+                          5, 4, 1,
+                          6, 5, 1,
+                          6, 2, 1,
+                          0, 4, 7,
+                          0, 3, 7,
+                          7, 3, 6,
+                          3, 6, 2};
 
-  PointLight pointLight(glm::vec3(1.0f,1.0f,0.0f),glm::vec3(1.0f,1.0f,1.0f),glm::vec3(1.0f,1.0f,1.0f),glm::vec3(1.0f,1.0f,1.0f));
+  PointLight pointLight(
+      glm::vec3(1.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f),
+      glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 
   m_vertBuffer = new VertexBuffer(positions, sizeof(positions));
   m_vertArray = new VertexArray();
   m_indexBuffer = new IndexBuffer(index, 6 * 3 * 2);
   VertexBufferLayout layout;
+  layout.Push<float>(3);
   layout.Push<float>(3);
   layout.Push<float>(2);
   m_vertArray->AddBuffer(*m_vertBuffer, layout);
@@ -43,19 +56,20 @@ TestLighting::TestLighting()
       glm::perspective(glm::radians(m_Fov), 800.0f / 600.0f, 0.1f, 100.0f);
   m_Model = glm::translate(m_Model, m_Translate);
   m_Shader->Bind();
-  Material material (0,0,32);
-  m_Shader->setUniformMaterial("u_Material",material);
+  Material material(0, 0, 32);
+  m_Shader->setUniformMaterial("u_Material", material);
   m_Shader->setUniformMat4f("u_Projection", m_Projection);
   m_Shader->setUniformMat4f("u_Model", m_Model);
-  m_Shader->setUniformPointLight("u_PointLights",pointLight,true);
+  m_Shader->setUniformPointLight("u_PointLights", pointLight, true);
   m_Shader->Unbind();
   Input::SetScrollCallback([this](double xOff, double yOff) {
     m_Fov -= yOff;
-    if(m_Fov < 1.0f) m_Fov = 1.0f;
-    if(m_Fov > 45.0f) m_Fov = 45.0f;
+    if (m_Fov < 1.0f)
+      m_Fov = 1.0f;
+    if (m_Fov > 45.0f)
+      m_Fov = 45.0f;
     m_Projection =
         glm::perspective(glm::radians(m_Fov), 800.0f / 600.0f, 0.1f, 100.0f);
-
   });
 }
 
