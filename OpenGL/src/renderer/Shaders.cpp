@@ -93,7 +93,7 @@ int Shader::GetUniformLocation(const std::string &name) {
   }
   int location = glGetUniformLocation(m_RendererID, name.c_str());
   if(location < 0){
-    std::cout << "Uniform not found" << std::endl;
+    std::cout << "Uniform " <<name<< " not found" << std::endl;
   }else{
     uniform_loc_cache[name] = location;
   }
@@ -155,10 +155,14 @@ unsigned int Shader::CompileShader(unsigned int type,
 
 unsigned int Shader::CreateShaders(ShaderSource &shader_source) {
   unsigned int program = glCreateProgram();
+  std::cout << "Compiling Vertex shader" << std::endl;
   unsigned int vertex_shader_id =
       CompileShader(GL_VERTEX_SHADER, shader_source.vertex_shader);
+  std::cout << "Vertex shader compiled" << std::endl;
+  std::cout << "Compiling Fragment shader" << std::endl;
   unsigned int fragment_shader_id =
       CompileShader(GL_FRAGMENT_SHADER, shader_source.fragment_shader);
+  std::cout << "Fragment shader compiled" << std::endl;
   glAttachShader(program, vertex_shader_id);
   glAttachShader(program, fragment_shader_id);
   glLinkProgram(program);

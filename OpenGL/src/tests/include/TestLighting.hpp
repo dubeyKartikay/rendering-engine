@@ -1,6 +1,7 @@
 #ifndef TESTLIGHTING
 #define TESTLIGHTING
 #include "IndexBuffer.hpp"
+#include "Light.hpp"
 #include "Texture2D.hpp"
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
@@ -20,6 +21,7 @@ private:
   Texture2D* m_Texture;
   float m_RotationAngle;
   glm::vec3 m_Translate;
+  PointLight * m_PointLight;
   char m_texturePath[1024];
   float m_CameraSensitivity;
   float m_CameraWalkSpeed;

@@ -8,6 +8,14 @@ void Renderer::Draw(const VertexArray &va, const IndexBuffer &ib,
   shader.Bind();
   glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr);
 }
+
+void Renderer::Draw(const VertexArray &va, const VertexBuffer &vb,
+                    const Shader &shader) const {
+  va.Bind();
+  vb.Bind();
+  shader.Bind();
+  glDrawArrays(GL_TRIANGLES, 0, vb.GetCount());
+}
 void Renderer::Draw(const Model &model, Shader &shader) const {
   shader.Bind();
   model.Draw(shader);
@@ -17,5 +25,5 @@ void Renderer::EnableDepthTesting() const { glEnable(GL_DEPTH_TEST); }
 void Renderer::Clear() const {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
-Renderer::Renderer() { glProvokingVertex(GL_FIRST_VERTEX_CONVENTION); }
+Renderer::Renderer() {}
 Renderer *Renderer::renderer = nullptr;

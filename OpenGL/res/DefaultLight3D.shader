@@ -27,8 +27,6 @@ void main()
 #shader fragment
 #version 330 core
 
-out vec4 color;
-
 struct Material {
   sampler2D diffuse;
   sampler2D specular;
@@ -55,6 +53,7 @@ struct PointLight{
 #define MAX_DIRECIONAL_LIGHTS 4
 #define MAX_POINT_LIGHTS 10
 
+out vec4 color;
 in vec2 v_texCord;
 in vec3 v_Normal;
 in vec3 v_FragmentPosition;
@@ -73,16 +72,16 @@ void main(){
     vec4 materialSpecular = texture(u_Material.specular,v_texCord);
     
     vec3 viewDirection = normalize(v_CameraPosition - v_FragmentPosition);
-    vec3 result;
-    
-    for(int i = 0 ; i < MAX_DIRECIONAL_LIGHTS ; i++ ) {
-      result += CalcDirectionalLight(u_DirectionalLights[i],v_Normal,viewDirection);
-    }
+   vec3 result = vec3(0,0,0);
+  
+//    for(int i = 0 ; i < MAX_DIRECIONAL_LIGHTS ; i++ ) {
+  //    result += CalcDirectionalLight(u_DirectionalLights[i],v_Normal,viewDirection);
+ //   }
     for(int i = 0 ; i < MAX_POINT_LIGHTS ; i++ ) {
-      result += CalcPointLight(u_PointLights[i],v_Normal,v_FragmentPosition,viewDirection);
+      result += vec3(1,0,0);
     }
 
-    color= vec4(result,1);
+    color= vec4(result,1);  
 }
 
 vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDirection){
@@ -105,8 +104,8 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDirect
   float distance =  length(light.position - v_FragmentPosition);
   float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
 
-  vec3 materialDiffuse = vec3(texture(u_Material.diffuse,v_texCord));
-  vec3 materialSpecular = vec3(texture(u_Material.specular,v_texCord));
+  vec3 materialDiffuse = texture(u_Material.diffuse,v_texCord);
+  vec3 materialSpecular = texture(u_Material.specular,v_texCord);
 
   vec3 ambient = light.ambient * materialDiffuse;
   vec3 diffuse = light.diffuse * diff * materialDiffuse;

@@ -11,6 +11,7 @@ class VertexArray{
     void AddBuffer(VertexBuffer &vb, VertexBufferLayout & layout);
     void Bind() const;
     void Unbind() const;
+    
 };
 
 #endif // !VERTEX_ARRAY
