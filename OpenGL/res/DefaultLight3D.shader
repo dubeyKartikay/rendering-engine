@@ -78,10 +78,10 @@ void main(){
   //    result += CalcDirectionalLight(u_DirectionalLights[i],v_Normal,viewDirection);
  //   }
     for(int i = 0 ; i < MAX_POINT_LIGHTS ; i++ ) {
-      result += vec3(1,0,0);
+      result +=  CalcPointLight(u_PointLights[i],v_Normal,v_FragmentPosition,viewDirection);
     }
 
-    color= vec4(result,1);  
+    color= vec4(abs(v_Normal),1);  
 }
 
 vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDirection){
@@ -99,13 +99,13 @@ vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDirectio
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDirection){
   vec3 lightDirection = normalize(light.position - v_FragmentPosition);
   float diff = max(dot(normal,lightDirection),0);
-  float spec = pow(max(dot(normal, normalize(viewDirection + lightDirection)),0),u_Material.shininess);
+  float spec = pow(max(dot(normal, normalize(viewDirection + lightDirection)),-1),u_Material.shininess);
 
   float distance =  length(light.position - v_FragmentPosition);
   float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
 
-  vec3 materialDiffuse = texture(u_Material.diffuse,v_texCord);
-  vec3 materialSpecular = texture(u_Material.specular,v_texCord);
+  vec3 materialDiffuse = vec3(texture(u_Material.diffuse,v_texCord));
+  vec3 materialSpecular = vec3(texture(u_Material.specular,v_texCord));
 
   vec3 ambient = light.ambient * materialDiffuse;
   vec3 diffuse = light.diffuse * diff * materialDiffuse;

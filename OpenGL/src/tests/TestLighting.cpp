@@ -126,7 +126,6 @@ void TestLighting::Render() {
   m_Shader->setUniformMat4f("u_Projection", m_Projection);
   m_Shader->setUniformVec3("u_CameraPosition", camera.GetPosition());
   m_Shader->setUniformPointLight("u_PointLights", *m_PointLight, true);
-  std::cout << "Render called" << std::endl;
   camera.FitNSetViewMatrix(*m_Shader);
   m_vertArray->Bind();
   m_Texture->Bind(0);
