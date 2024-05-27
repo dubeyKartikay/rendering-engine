@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/open_gl.dir/main.cpp.o -o open_gl  -lGL -lglfw -lGLEW renderer/librenderer.a tests/libtests.a renderer/librenderer.a -lassimp 
