@@ -79,11 +79,11 @@ int main(void) {
   Input::Initialize(window);
 
   TestFrame tests;
-  // tests.AddTest(new TestCube3D());
-  // tests.AddTest(new TestRect2D());
-  // tests.AddTest(new TestTexture2D());
-  // tests.AddTest(new TestCamera3D());
-  // tests.AddTest(new TestModel3D());
+  tests.AddTest(new TestCube3D());
+  tests.AddTest(new TestRect2D());
+  tests.AddTest(new TestTexture2D());
+  tests.AddTest(new TestCamera3D());
+  tests.AddTest(new TestModel3D());
   tests.AddTest(new TestLighting());
 
   float deltaTime = 0.0f;
@@ -115,7 +115,7 @@ int main(void) {
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
-  ImGui_ImplOpenGL3_Shutdown(;
+  ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplGlfw_Shutdown();
   ImGui::DestroyContext();
 
